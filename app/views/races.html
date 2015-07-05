@@ -1,0 +1,9 @@
+<p>This is the races view.</p>
+<p>Current circuit:{{current_circuit}}</p>
+<p>Something:{{config.something}}</p>
+<p>Server Url: {{config.server_url}}
+  <select ng-model="config.server_url">
+    <option ng-repeat="(key, value) in config.servers" value="{{value}}">{{key}}</option>
+  </select>
+</p>
+
