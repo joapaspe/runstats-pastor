@@ -23,6 +23,7 @@ angular.module('runstatsApp')
       console.log("Setting service url", data);
       for (var op in data.config) {
         self.config[op] = data.config[op];
+        console.log("Loading", op, self.config[op]);
       }
 
       deffered.resolve();
@@ -38,10 +39,10 @@ angular.module('runstatsApp')
 
     // Functions
     // Retrieves a list of circuits
-    self.config.getCircuits = function() {
+    this.getCircuits = function() {
       var deffered = $q.defer();
-      var final_url = self.config.server_url + "circuits";
-
+      var final_url = self.config.server_url + "/circuits";
+      console.log("Getting, "+final_url);
       $http({
         method : 'GET',
         url: final_url
@@ -58,7 +59,7 @@ angular.module('runstatsApp')
 
     // Retrieves all the races information by circuit
 
-    self.config.getAllRaceCircuits = function() {
+    this.getAllRaceCircuits = function() {
       var deffered = $q.defer();
       var final_url = self.config.server_url + "all_circuit_races";
 
@@ -78,7 +79,7 @@ angular.module('runstatsApp')
     };
 
     // Retrieves histogram for race
-    self.config.getRaceHistogram = function(circuit, race) {
+    this.getRaceHistogram = function(circuit, race) {
       var deffered = $q.defer();
       var final_url = self.config.server_url +
         "histogram/"+circuit+"/"+race;
@@ -99,7 +100,7 @@ angular.module('runstatsApp')
     };
 
     // Retrieves histogram for race
-    self.config.getCircuitInfo = function(circuit) {
+    this.getCircuitInfo = function(circuit) {
       var deffered = $q.defer();
       var final_url = self.config.server_url +
         "circuit_info/"+circuit;

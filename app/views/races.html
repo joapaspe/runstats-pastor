@@ -2,8 +2,24 @@
 <p>Current circuit:{{current_circuit}}</p>
 <p>Something:{{config.something}}</p>
 <p>Server Url: {{config.server_url}}
-  <select ng-model="config.server_url">
+  <select ng-model="config.server_url" ng-change="load_data()">
     <option ng-repeat="(key, value) in config.servers" value="{{value}}">{{key}}</option>
   </select>
 </p>
+<hr>
 
+<ul class="nav nav-tabs nav-justified">
+  <li role="presentation"
+      ng-class="{active:isCircuitSelected(null)}">
+    <a ng-click="selectCircuit(null)" >
+    All races</a></li>
+
+  <li ng-repeat="(id, circuit) in circuits"
+      ng-class="{active:isCircuitSelected(circuit)}"
+    >
+    <a ng-click="selectCircuit(circuit)" >
+      {{circuit}}</a></li>
+</ul>
+</ul>
+
+{{circuits}}
