@@ -30,7 +30,7 @@ angular.module('runstatsApp')
     // Loading the circuits
     $scope.load_data = function() {
       runstats.getCircuits().then(function (data) {
-        $scope.last_query = JSON.stringify(data);
+        $scope.last_query = data;
         $scope.circuits = data;
       });
     };

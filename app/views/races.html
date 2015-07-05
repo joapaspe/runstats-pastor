@@ -1,84 +1,85 @@
-<p>This is the races view.</p>
-<p>Current circuit:{{current_circuit}}</p>
-<p>Something:{{something}}</p>
-<p>Server Url: {{config.server_url}}
-  <select ng-model="config.server_url" ng-change="load_data()">
-    <option ng-repeat="(key, value) in config.servers" value="{{value}}">{{key}}</option>
-  </select>
-</p>
-<hr>
+<div class="container">
+  <p>This is the races view.</p>
+  <p>Current circuit:{{current_circuit}}</p>
+  <p>Something:{{something}}</p>
+  <p>Server Url: {{config.server_url}}
+    <select ng-model="config.server_url" ng-change="load_data()">
+      <option ng-repeat="(key, value) in config.servers" value="{{value}}">{{key}}</option>
+    </select>
+  </p>
+  <hr>
 
-<div>
-  <ul class="nav nav-tabs nav-justified">
-    <li role="presentation"
-        ng-class="{active:isCircuitSelected(null)}">
-      <a ng-click="selectCircuit(null)" >
-        All races</a></li>
+  <div>
+    <ul class="nav nav-tabs nav-justified">
+      <li role="presentation"
+          ng-class="{active:isCircuitSelected(null)}">
+        <a ng-click="selectCircuit(null)" >
+          All races</a></li>
 
-    <li ng-repeat="(id, circuit) in circuits"
-        ng-class="{active:isCircuitSelected(id)}"
-      >
-      <a ng-click="selectCircuit(id)" >
-        {{circuit}}</a></li>
-  </ul>
+      <li ng-repeat="(id, circuit) in circuits"
+          ng-class="{active:isCircuitSelected(id)}"
+        >
+        <a ng-click="selectCircuit(id)" >
+          {{circuit}}</a></li>
+    </ul>
 
-  <div class="row">
-    <h3>Select your race</h3>
-    <div class = "col-md-4">
+    <div class="row">
+      <h3>Select your race</h3>
+      <div class = "col-md-4">
 
-      <ul class="nav nav-pills nav-stacked">
-        <li ng-repeat="(id, race) in circuit_info.races"
-            ng-class="{active:isRaceSelected(race)}"
-          >
-          <a ng-click="selectRace(race)" >
-            {{race.name}}</a></li>
-      </ul>
+        <ul class="nav nav-pills nav-stacked">
+          <li ng-repeat="(id, race) in circuit_info.races"
+              ng-class="{active:isRaceSelected(race)}"
+            >
+            <a ng-click="selectRace(race)" >
+              {{race.name}}</a></li>
+        </ul>
 
-    </div>
+      </div>
 
-    <div class="col-md-8" ng-show="isCircuitSelected()">
+      <div class="col-md-8" ng-show="isCircuitSelected()">
 
-      <tabset vertical="false">
-        <tab heading="Race Information" select="setCircuitTab('RACEINFO')"></tab>
-        <tab heading="Histograms" select="setCircuitTab('HISTOGRAM')"></tab>
-      </tabset>
+        <tabset vertical="false">
+          <tab heading="Race Information" select="setCircuitTab('RACEINFO')"></tab>
+          <tab heading="Histograms" select="setCircuitTab('HISTOGRAM')"></tab>
+        </tabset>
 
-      <div ng-show="isSelectedTab('RACEINFO')">
-        <!--<h3>This is the information of the race!</h3>
-        <div class="panel panel-default" ng-repeat="race_data in info_values">
-          <div class="panel-heading">{{race_data.name}}</div>
-          <div class="panel-body">
-            {{selected_race[race_data.value]}}
+        <div ng-show="isSelectedTab('RACEINFO')">
+          <!--<h3>This is the information of the race!</h3>
+          <div class="panel panel-default" ng-repeat="race_data in info_values">
+            <div class="panel-heading">{{race_data.name}}</div>
+            <div class="panel-body">
+              {{selected_race[race_data.value]}}
+            </div>
           </div>
-        </div>
 
+        </div>
+    -->
+          <h3>{{selected_race.name}}</h3>
+          <dl ng-repeat="race_data in info_values">
+            <dt>{{race_data.name}}</dt>
+            <dd race-element >{{selected_race[race_data.value]}}
+              {{race_data.filter}}
+            </dd>
+          </dl>
+        </div>
+        <div ng-show="isSelectedTab('HISTOGRAM')">
+          <h3>This is the histogram</h3>
+          <!--<canvas id="histogramChart" width="800" height="400"></canvas>-->
+          <!--<chart id-canvas="'myCanvas'" datasets='histogram.datasets' labels='histogram.labels'></chart>-->
+          <canvas id="bar" class="chart chart-bar" data="histogram.datasets"
+                  labels="histogram.labels"></canvas>
+        </div>
       </div>
-  -->
-        <h3>{{selected_race.name}}</h3>
-        <dl ng-repeat="race_data in info_values">
-          <dt>{{race_data.name}}</dt>
-          <dd race-element >{{selected_race[race_data.value]}}
-            {{race_data.filter}}
-          </dd>
-        </dl>
-      </div>
-      <div ng-show="isSelectedTab('HISTOGRAM')">
-        <h3>This is the histogram</h3>
-        <!--<canvas id="histogramChart" width="800" height="400"></canvas>-->
-        <!--<chart id-canvas="'myCanvas'" datasets='histogram.datasets' labels='histogram.labels'></chart>-->
-        <canvas id="bar" class="chart chart-bar" data="histogram.datasets"
-                labels="histogram.labels"></canvas>
-      </div>
+
     </div>
 
   </div>
 
-</div>
-
-<div class="panel panel-default">
-  <div class="panel-heading">Last query:</div>
-  <div class="panel-body">
-    {{last_query}}
+  <div class="panel panel-default">
+    <div class="panel-heading">Last query:</div>
+    <div class="panel-body">
+      <json-formatter json="last_query" open="1"></json-formatter>
+    </div>
   </div>
 </div>
-
