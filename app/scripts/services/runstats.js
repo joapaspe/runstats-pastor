@@ -99,9 +99,9 @@ angular.module('runstatsApp')
       return deffered.promise;
     };
 
-    // Retrieves histogram for race
+
     this.getCircuitInfo = function(circuit) {
-      var deffered = $q.defer();
+      var defered = $q.defer();
       var final_url = self.config.server_url +
         "circuit_info/"+circuit;
 
@@ -111,13 +111,13 @@ angular.module('runstatsApp')
         url: final_url
       }).
         success(function (data) {
-          deffered.resolve(data);
+          defered.resolve(data);
         }).
         error(function(data) {
-          deffered.reject(data);
+          defered.reject(data);
         });
 
-      return deffered.promise;
+      return defered.promise;
     };
 
   });

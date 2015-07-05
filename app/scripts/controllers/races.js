@@ -19,7 +19,7 @@ angular.module('runstatsApp')
 
     // Variables
     $scope.current_circuit = null;
-    $scope.something = "something";
+    //$scope.something = "something";
     $scope.something = runstats.something;
     $scope.config = runstats.config;
 
@@ -30,7 +30,7 @@ angular.module('runstatsApp')
     // Loading the circuits
     $scope.load_data = function() {
       runstats.getCircuits().then(function (data) {
-        $scope.something = JSON.stringify(data);
+        $scope.last_query = JSON.stringify(data);
         $scope.circuits = data;
       });
     };
@@ -43,11 +43,25 @@ angular.module('runstatsApp')
     };
 
 
+    /**
+     * selectCircuit(circuit() load the races and the info from the races
+     * @param circuit
+     */
     $scope.selectCircuit = function (circuit) {
-      return $scope.current_circuit = circuit;
+      $scope.current_circuit = circuit;
+      $scope.setCircuit(circuit);
     };
 
+    $scope.setCircuit = function(circuit) {
+      runstats.getCircuitInfo(circuit).then(function(data)
+      {
+        if (circuit === null) {
 
+        }
+        $scope.circuit_info = data.circuit;
+        $scope.last_query = data.circuit;
+      });
+    };
   });
 
 
