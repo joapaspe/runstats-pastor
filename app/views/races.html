@@ -24,7 +24,10 @@
     </ul>
 
     <div class="row">
-      <h3>Select your race</h3>
+      <div ng-show="isCircuitSelected()">
+        <button class="btn btn-default" ng-click="showInfoCircuit()">View Circuit info</button>
+      </div>
+      <h4>Select your race</h4>
       <div class = "col-md-4">
 
         <ul class="nav nav-pills nav-stacked">
@@ -37,39 +40,35 @@
 
       </div>
 
-      <div class="col-md-8" ng-show="isCircuitSelected()">
 
-        <tabset vertical="false">
-          <tab heading="Race Information" select="setCircuitTab('RACEINFO')"></tab>
-          <tab heading="Histograms" select="setCircuitTab('HISTOGRAM')"></tab>
-        </tabset>
+      <div class="col-md-8">
+        <div ng-show="show_info == 'circuit'">
+          <h4>Information about {{circuit_info.name}}</h4>
 
-        <div ng-show="isSelectedTab('RACEINFO')">
-          <!--<h3>This is the information of the race!</h3>
-          <div class="panel panel-default" ng-repeat="race_data in info_values">
-            <div class="panel-heading">{{race_data.name}}</div>
-            <div class="panel-body">
-              {{selected_race[race_data.value]}}
-            </div>
+        </div>
+        <div ng-if="show_info == 'race'">
+          <h4>Information about: {{selected_race.name}}</h4>
+
+          <ul class="nav nav-pills">
+            <li ng-repeat="(label, name) in race_options"
+                ng-class="{active: show_info_race == label}">
+              <a ng-click="setInfoRace(label)">{{name}}</a>
+            </li>
+          </ul>
+
+          <div ng-if="isInfoRace('information')">
+            <dl ng-repeat="race_data in info_values">
+              <dt>{{race_data.name}}</dt>
+              <dd race-element >{{selected_race[race_data.value]}}
+                {{race_data.filter}}
+              </dd>
+            </dl>
           </div>
-
-        </div>
-    -->
-          <h3>{{selected_race.name}}</h3>
-          <dl ng-repeat="race_data in info_values">
-            <dt>{{race_data.name}}</dt>
-            <dd race-element >{{selected_race[race_data.value]}}
-              {{race_data.filter}}
-            </dd>
-          </dl>
-        </div>
-        <div ng-show="isSelectedTab('HISTOGRAM')">
+        <!--<div ng-show="isSelectedTab('HISTOGRAM')">&ndash;&gt;
           <h3>This is the histogram</h3>
-          <!--<canvas id="histogramChart" width="800" height="400"></canvas>-->
-          <!--<chart id-canvas="'myCanvas'" datasets='histogram.datasets' labels='histogram.labels'></chart>-->
           <canvas id="bar" class="chart chart-bar" data="histogram.datasets"
                   labels="histogram.labels"></canvas>
-        </div>
+        </div>-->
       </div>
 
     </div>
