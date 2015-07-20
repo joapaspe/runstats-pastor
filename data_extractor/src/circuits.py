@@ -12,13 +12,12 @@ def parse_circuit(indexes, id, name, dst_dir, parser=Cronochip,
     """
     race = Cronochip()
 
-
     # Load or create the races files
     race_list_file = "%s/races.json" % (dst_dir)
     race_list = set()
     if not delete and os.path.exists(race_list_file):
         f = open(race_list_file)
-        race_list = json.load(f)
+        race_list = set(json.load(f))
         f.close()
 
     # Load circuit indexes
@@ -31,11 +30,10 @@ def parse_circuit(indexes, id, name, dst_dir, parser=Cronochip,
         f.close()
 
     if id in circuit_list:
-        print >> sys.stderr, "The race %s already exists" % (tag)
+        print >> sys.stderr, "The race %s already exists" % (id)
         if not update:
             return -1
         # Remove circuit
-
 
     for tag in indexes:
         if tag in race_list:
@@ -66,7 +64,6 @@ def parse_circuit(indexes, id, name, dst_dir, parser=Cronochip,
         "races": indexes
     }
 
-
     circuit_file = "%s/circuits/%s.json" % (dst_dir, id)
     # 1.Save race_info
     f = open(circuit_file, "w")
@@ -80,7 +77,7 @@ def parse_circuit(indexes, id, name, dst_dir, parser=Cronochip,
     f.close()
 
     # Update the circuits
-    f = open(race_list_file, "w")
+    f = open(circuit_list_file, "w")
     json.dump(list(circuit_list),f)
     f.close()
 from common import mkdir_p
@@ -95,6 +92,15 @@ parser.add_option("--name", dest="name",
                   help="Name of the circuit. Real Name")
 parser.add_option("-d", "--dst_dir", dest="dst_dir",
                   help="Directory to set the file.")
+parser.add_option("--update", dest="update",
+                  action="store_true",
+                  help="If the circuit exist reload it, the same with races",
+                  default=False)
+parser.add_option("--delete", dest="delete",
+                  action="store_true",
+                  help="Remove all the existing data",
+                  default=False)
+
 
 (options, args) = parser.parse_args()
 
@@ -113,4 +119,4 @@ if __name__ == '__main__':
 
     # Load circuit json
 
-    parse_circuit(tags, id, name, dst_dir)
+    parse_circuit(tags, id, name, dst_dir, update=options.update, delete=options.delete)
