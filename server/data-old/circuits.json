@@ -1,0 +1,86 @@
+{
+  "test": {
+    "races": {
+      "1": {
+        "data_file": "test/1.json", 
+        "name": "Test1"
+      }, 
+      "2": {
+        "data_file": "test/1.json", 
+        "name": "Test2"
+      }
+    }, 
+    "name": "Test Circuit"
+  }, 
+  "divina2013": {
+    "races": {
+      "449": {
+        "distance": 5677, 
+        "name": "VII Carrera popular NOCTURNA Benimamet", 
+        "data_file": "divina/449.json", 
+        "teams": 386, 
+        "real_best": 721, 
+        "oficial_best": 1095.0, 
+        "real_avg": 1890, 
+        "oficial_avg": 1993, 
+        "runners": 5606
+      }, 
+      "455": {
+        "distance": 5940, 
+        "name": "IV Volta a Peu Levante U.D.", 
+        "data_file": "divina/455.json", 
+        "teams": 426, 
+        "real_best": 1015, 
+        "oficial_best": 1058.0, 
+        "real_avg": 1564, 
+        "oficial_avg": 1622, 
+        "runners": 5337
+      }, 
+      "463": {
+        "distance": 6169, 
+        "name": "IV Carrera de la Salut", 
+        "data_file": "divina/463.json", 
+        "teams": 370, 
+        "real_best": 1015, 
+        "oficial_best": 1058.0, 
+        "real_avg": 1564, 
+        "oficial_avg": 1622, 
+        "runners": 4748
+      }, 
+      "429": {
+        "distance": 7200, 
+        "name": "XV Trofeo Galapagos", 
+        "data_file": "divina/429.json", 
+        "teams": 411, 
+        "real_best": 1057, 
+        "oficial_best": 1352.0, 
+        "real_avg": 2288, 
+        "oficial_avg": 2420, 
+        "runners": 6300
+      }, 
+      "435": {
+        "distance": 6075, 
+        "name": "X Volta a Peu a Nazaret", 
+        "data_file": "divina/435.json", 
+        "teams": 392, 
+        "real_best": 721, 
+        "oficial_best": 1095.0, 
+        "real_avg": 1890, 
+        "oficial_avg": 1993, 
+        "runners": 5337
+      }, 
+      "432": {
+        "distance": 5335, 
+        "name": "II Carrera Universitat de Valencia", 
+        "data_file": "divina/432.json", 
+        "teams": 409, 
+        "real_best": 761, 
+        "oficial_best": 954.0, 
+        "real_avg": 1652, 
+        "oficial_avg": 1777, 
+        "runners": 6078
+      }
+    }, 
+    "name": "IX Circuito Divina Pastora"
+  }
+}
