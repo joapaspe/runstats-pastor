@@ -3,7 +3,7 @@
   {
     "server_url":"http://localhost:5000/",
     "servers": {
-      "heroku":"http://runstatserver.herokuapp.com",
+      "heroku":"http://runstatsserver.herokuapp.com",
       "localhost":"http://localhost:5000"
     }
   }

@@ -18,7 +18,7 @@
 
       <li ng-repeat="(id, circuit) in circuits"
           ng-class="{active:isCircuitSelected(id)}"
-        >
+              >
         <a ng-click="selectCircuit(id)" >
           {{circuit}}</a></li>
     </ul>
@@ -33,7 +33,7 @@
         <ul class="nav nav-pills nav-stacked">
           <li ng-repeat="(id, race) in circuit_info.races"
               ng-class="{active:isRaceSelected(race)}"
-            >
+                  >
             <a ng-click="selectRace(race)" >
               {{race.name}}</a></li>
         </ul>
@@ -64,21 +64,22 @@
               </dd>
             </dl>
           </div>
-        <!--<div ng-show="isSelectedTab('HISTOGRAM')">&ndash;&gt;
-          <h3>This is the histogram</h3>
-          <canvas id="bar" class="chart chart-bar" data="histogram.datasets"
-                  labels="histogram.labels"></canvas>
-        </div>-->
+          <!--<div ng-show="isSelectedTab('HISTOGRAM')">&ndash;&gt;
+            <h3>This is the histogram</h3>
+            <canvas id="bar" class="chart chart-bar" data="histogram.datasets"
+                    labels="histogram.labels"></canvas>
+          </div>-->
+        </div>
+
       </div>
 
     </div>
 
-  </div>
-
-  <div class="panel panel-default">
-    <div class="panel-heading">Last query:</div>
-    <div class="panel-body">
-      <json-formatter json="last_query" open="1"></json-formatter>
+    <div class="panel panel-default">
+      <div class="panel-heading">Last query:</div>
+      <div class="panel-body">
+        <json-formatter json="last_query" open="1"></json-formatter>
+      </div>
     </div>
   </div>
 </div>

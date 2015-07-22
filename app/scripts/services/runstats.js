@@ -17,6 +17,8 @@ angular.module('runstatsApp')
     var self = this;
     self.config = {};
     self.config.server_url = "http://runstatsserver.herokuapp.com/";
+    self.config.pending_ops = 0;
+
     var deffered = $q.defer();
 
     $http.get('/config.json').success( function(data) {
@@ -43,15 +45,19 @@ angular.module('runstatsApp')
       var deffered = $q.defer();
       var final_url = self.config.server_url + "/circuits";
       console.log("Getting, "+final_url);
+      self.config.pending_ops += 1;
+      console.log("Pending", self.config.pending_ops);
       $http({
         method : 'GET',
         url: final_url
       }).
         success(function (data) {
           deffered.resolve(data);
+            self.config.pending_ops -= 1;
         }).
         error(function(data) {
           deffered.reject(data);
+            self.config.pending_ops -= 1;
         });
 
       return deffered.promise;

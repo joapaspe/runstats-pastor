@@ -35,6 +35,11 @@ angular
         controller: 'RacesCtrl',
         controllerAs: 'races'
       })
+      .when('/services_inspector', {
+        templateUrl: 'views/services_inspector.html',
+        controller: 'ServicesInspectorCtrl',
+        controllerAs: 'servicesInspector'
+      })
       .otherwise({
         redirectTo: '/'
       });

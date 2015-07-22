@@ -1,0 +1,49 @@
+<div class="container">
+    <p>This is the services_inspector view.</p>
+    <br>
+    <h1>This is the serviceInspector view.</h1>
+    <div class="row">
+
+        <div class="col-md-6">
+            <label for=server_url>RESTful server</label>
+            <input type="text" class="form-control" ng-model="config.server_url" id="config.server_url">
+            <div class = "form-group">
+                <label for="requestedUrl">URL</label>
+                <input type="text" class="form-control"
+                       id="requestUrl" placeholder="Enter URL (Relative)"
+                       ng-model="requested_url"
+                        >
+            </div>
+            <div class = "form-group">
+                <label >Result</label>
+                <json-formatter json="result" open="1"></json-formatter>
+                <!--<textarea class="form-control" rows="5" id="result" ng-model="result"></textarea>-->
+            </div>
+            <button type="button" class="btn btn-default" id="test" ng-click="testUrl()">Test</button>
+            <button type="button" class="btn btn-danger" id="clear">Clear</button>
+            <span class="label label-default" id="status">status</span>
+
+        </div>
+        <div class="col-md-6">
+
+            <table class="table">
+                <thead>
+                <tr><th>Name</th><th>URL</th><th> </th><th>Description</th></tr>
+                </thead>
+                <tbody id="table_test">
+                <tr ng-repeat="webservice in runstats_services">
+                    <td>{{webservice.name}}</td><td>{{webservice.url}}</td>
+                    <td>
+                        <button class="btn btn-warning" ng-click="setUrl(webservice.url)">Set</button>
+                        <button class="btn btn-info" ng-click="setUrl(webservice.url);testUrl()">Test</button>
+
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+</div>
+<script>
