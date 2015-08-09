@@ -54,7 +54,7 @@ print json.dumps(races, sort_keys=True, indent=4)
 print json.dumps(circuits, sort_keys=True, indent=4)
 
 
-''' Receives a race_info object and compute the average pace 
+''' Receives a race_info object and compute the average pace
     Returns a tuple
 '''
 def getRacePaces(race_info, real=True):
@@ -62,23 +62,23 @@ def getRacePaces(race_info, real=True):
     real_avg  = 0
     oficial_best = 999999
     oficial_avg = 0
-  
+
     for key in race_info:
       racer = race_info[key]
-      oficial_best = min(oficial_best, racer["toficial"])
-      oficial_avg += racer["toficial"]
+      oficial_best = min(official_best, racer["tofficial"])
+      oficial_avg += racer["tofficial"]
       if (real):
             real_best = min(oficial_best, racer["preal"])
             real_avg += racer["treal"]
-  
+
     res = {"oficial_best": oficial_best, "oficial_avg": int(oficial_avg/len(race_info))}
-    
+
     if real:
       res["real_best"] = real_best
       res["real_avg"] = int(real_avg/len(race_info))
-      
+
     return res
-    
+
 def getRaceInfo(circuit, id):
     # FIXME: Try catch if the file fails
     # TODO:  Use global variable for data
@@ -86,20 +86,22 @@ def getRaceInfo(circuit, id):
     circuit_info = circuits[circuit]
     if not circuit_info:
         return None
-  
+
     race_info = circuit_info["races"][id]
-    
+
     if not race_info:
         return None
-    
-    file_name = "data/%s" % race_info["data_file"]
-  
+
+    # FIXME: Update races json files, removing "data/" from the data_file
+    # file_name = "data/%s" % race_info["data_file"]
+    file_name = "%s" % race_info["data_file"]
+
     f_json = open(file_name)
-  
+
     race_info = json.load(f_json)
-  
+
     return race_info
-  
+
 def getCircuits():
     # TODO: Catch!
     return [(k, circuits[k]["name"]) for k in circuits]
@@ -118,35 +120,35 @@ def getAllRaces():
         d ={"id": k,
             "name": circuit["races"][k]["name"],
             "circuit": name
-            
+
             }
         races.append(d)
-  
+
     return races
 
 def getAllCircuitRaces():
   import copy
   #TODO: Catch!
   clean_circuits = copy.deepcopy(circuits)
-  
+
   for name, circuit in clean_circuits.iteritems():
     for race in circuit["races"]:
       circuit["races"][race]["circuit"] = name
       circuit["races"][race]["id"] = race
-      del circuit["races"][race]["data_file"] 
-  
+      del circuit["races"][race]["data_file"]
+
   return clean_circuits
-  
+
 def getCircuitInfo(circuit):
   import copy
   #TODO: Catch!
-  
+
   if circuit not in circuits:
     return None
-  
+
   circuit_info = copy.deepcopy(circuits[circuit])
-  
+
   for race in circuit_info["races"]:
-    del circuit_info["races"][race]["data_file"] 
-  
+    del circuit_info["races"][race]["data_file"]
+
   return circuit_info

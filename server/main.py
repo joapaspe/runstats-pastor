@@ -38,25 +38,25 @@ def circuitInfo(circuit):
 def allRaces():
   races = race_info.getAllRaces()
   app.logger.debug('%s', races)
-  
+
   return jsonify({'races':races})
 
 @app.route('/all_circuit_races')
 @crossdomain(origin='*')
 def allCircuitRaces():
   races = race_info.getAllCircuitRaces()
-  
+
   return jsonify(races)
 
 
 @app.route('/histogram/<circuit>/<race_id>')
 @crossdomain(origin='*')
 def histogram(circuit, race_id):
-  
+
   info = race_info.getRaceInfo(circuit, race_id)
-  
+
   hist = histograms.getRaceHistogram(info)
-  
+
   return jsonify({'histogram':hist})
 
 if __name__ == '__main__':
