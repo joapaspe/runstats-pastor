@@ -9,7 +9,7 @@
  */
 angular.module('runstatsApp')
   .controller('SettingsCtrl', function ($scope, $http, runstats) {
-    $scope.version = "0.1.203";
+    $scope.version = "0.1.221";
 
     $scope.config = runstats.config;
 

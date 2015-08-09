@@ -68,7 +68,7 @@ angular.module('runstatsApp')
     // Retrieves all the races information by circuit
     this.getAllCircuitRaces = request_service("all_circuit_races");
 
-        // Retrieves histogram for race
+    // Retrieves histogram for race
     this.getRaceHistogram = function(circuit, race) {
       var final_url = "histogram/"+circuit+"/"+race;
       return request_service(final_url)();
@@ -79,4 +79,5 @@ angular.module('runstatsApp')
       return request_service(final_url)();
     };
 
+    this.getAllRaces = request_service("all_races");
   });

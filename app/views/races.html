@@ -1,5 +1,5 @@
 <div class="container">
-  <div>
+  <div ng-if="status.data_loaded">
     <ul class="nav nav-tabs nav-justified">
       <li role="presentation"
           ng-class="{active:isCircuitSelected(null)}">
@@ -14,22 +14,20 @@
     </ul>
 
     <div class="row">
-      <div ng-show="isCircuitSelected()">
+      <div ng-show="!isCircuitSelected(null)">
         <button class="btn btn-default" ng-click="showInfoCircuit()">View Circuit info</button>
       </div>
       <h4>Select your race</h4>
       <div class = "col-md-4">
 
         <ul class="nav nav-pills nav-stacked">
-          <li ng-repeat="(id, race) in circuit_info.races"
+          <li ng-repeat="(id, race) in races"
               ng-class="{active:isRaceSelected(race)}"
                   >
             <a ng-click="selectRace(race)" >
               {{race.name}}</a></li>
         </ul>
-
       </div>
-
 
       <div class="col-md-8">
         <div ng-show="show_info == 'circuit'">
@@ -65,11 +63,19 @@
 
     </div>
 
+
+  </div>
+  <div ng-if="status.data_loaded == false">
     <div class="panel panel-default">
-      <div class="panel-heading">Last query:</div>
-      <div class="panel-body">
-        <json-formatter json="last_query" open="1"></json-formatter>
-      </div>
+      <div class="panel-heading"><div class="panel-heading">Loading data...</div>
+  </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">Last query:</div>
+    <div class="panel-body">
+      <json-formatter json="last_query" open="1"></json-formatter>
     </div>
   </div>
+
+
 </div>

@@ -69,23 +69,28 @@ app.controller('RacesCtrl', function ($scope, runstats) {
     $scope.show_info = "None";
     $scope.show_info_race = "information";
 
+    // Status is an object that holds some useful information
+    $scope.status = {
+      'data_loaded':false,
+    };
+    // $Loading data
+
     // Loading the circuits
     $scope.load_data = function () {
       runstats.getCircuits().then(function (data) {
-        $scope.circuits = data;
+       $scope.circuits = data;
+       $scope.status.data_loaded = true;
+       $scope.setCircuit($scope.current_circuit);
       });
     };
 
     function url_change(new_value, old_value) {
       console.log("URL has changed", old_value, "->", new_value, $scope.config);
       $scope.load_data();
-
-
     }
     $scope.$watch("config.server_url", url_change);
 
     $scope.load_data();
-
 
     $scope.isCircuitSelected = function (circuit) {
       return $scope.current_circuit === circuit;
@@ -102,17 +107,20 @@ app.controller('RacesCtrl', function ($scope, runstats) {
     };
 
     $scope.setCircuit = function (circuit) {
-      runstats.getCircuitInfo(circuit).then(function (data) {
-        if (circuit === null) {
+      $scope.selectRace(null);
+      if (circuit === null) {
+        runstats.getAllRaces().then(function (data) {
+          $scope.races = data.races;
+        });
+        return;
+      }
 
-        }
+      runstats.getCircuitInfo(circuit).then(function (data) {
         $scope.circuit_info = data.circuit;
         $scope.last_query = data.circuit;
+        $scope.races = $scope.circuit_info.races;
       });
-    };
-
-    $scope.isCircuitSelected = function() {
-      return $scope.current_circuit !== null;
+      $scope.show_info = "circuit";
     };
 
     $scope.isRaceSelected = function (race) {
@@ -120,12 +128,20 @@ app.controller('RacesCtrl', function ($scope, runstats) {
     };
 
     $scope.selectRace = function (race) {
+
+      if (race === null) {
+        $scope.show_info = 'none';
+      }
+      else {
+        $scope.show_info = 'race';
+      }
       $scope.selected_race = race;
-      $scope.show_info = 'race';
+
     };
 
     $scope.showInfoCircuit = function() {
       $scope.show_info = 'circuit';
+      $scope.selected_race = 'null';
       //TODO: Show info circuit
     };
 

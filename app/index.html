@@ -37,12 +37,12 @@
             <a class="navbar-brand" href="#/">runstats</a>
           </div>
 
-          <div class="collapse navbar-collapse" id="js-navbar-collapse">
+          <div class="collapse navbar-collapse" id="js-navbar-collapse" ng-controller="HeaderController">
 
             <ul class="nav navbar-nav">
-              <li class="active"><a href="#/">Home</a></li>
-              <li class=""><a href="#/races">Magic</a></li>
-              <li class=""><a href="#/services_inspector">Web services</a></li>
+              <li ng-class="{active: isActive('/')}"><a href="#/">Home</a></li>
+              <li ng-class="{active: isActive('/races')}"><a href="#/races">Magic</a></li>
+              <li ng-class="{active: isActive('/services_inspector')}"><a href="#/services_inspector">Web services</a></li>
             </ul>
 
             <div ng-include="'views/settings_menu.html'"></div>

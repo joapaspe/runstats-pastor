@@ -114,16 +114,6 @@ def getRacesFromCircuits(circuit):
 
 def getAllRaces():
     # TODO: Cache
-    races = []
-    for name, circuit in circuits.iteritems():
-      for k in circuit["races"]:
-        d ={"id": k,
-            "name": circuit["races"][k]["name"],
-            "circuit": name
-
-            }
-        races.append(d)
-
     return races
 
 def getAllCircuitRaces():
