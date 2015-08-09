@@ -19,8 +19,30 @@ angular.module('runstatsApp')
     self.config.server_url = "http://runstatsserver.herokuapp.com";
     self.config.pending_ops = 0;
 
-    var deffered = $q.defer();
+    function request_service(service_url) {
+      return function() {
+        var deffered = $q.defer();
+        var final_url = self.config.server_url + "/" + service_url;
+        self.config.pending_ops += 1;
+        console.log(final_url);
+        $http({
+          method: 'GET',
+          url: final_url
+        }).
+          success(function (data) {
+            deffered.resolve(data);
+            self.config.pending_ops -= 1;
+          }).
+          error(function (data) {
+            deffered.reject(data);
+            self.config.pending_ops -= 1;
+          });
 
+        return deffered.promise;
+      };
+    }
+
+    var deffered = $q.defer();
     $http.get('/config.json').success( function(data) {
       console.log("Setting service url", data);
       for (var op in data.config) {
@@ -41,89 +63,20 @@ angular.module('runstatsApp')
 
     // Functions
     // Retrieves a list of circuits
-    this.getCircuits = function() {
-      var deffered = $q.defer();
-      var final_url = self.config.server_url + "/circuits";
-      console.log("Getting, "+final_url);
-      self.config.pending_ops += 1;
-      console.log("Pending", self.config.pending_ops);
-      $http({
-        method : 'GET',
-        url: final_url
-      }).
-        success(function (data) {
-          deffered.resolve(data);
-            self.config.pending_ops -= 1;
-        }).
-        error(function(data) {
-          deffered.reject(data);
-            self.config.pending_ops -= 1;
-        });
-
-      return deffered.promise;
-    };
+    this.getCircuits = request_service("circuits");
 
     // Retrieves all the races information by circuit
+    this.getAllCircuitRaces = request_service("all_circuit_races");
 
-    this.getAllRaceCircuits = function() {
-      var deffered = $q.defer();
-      var final_url = self.config.server_url + "/all_circuit_races";
-
-      console.log(final_url);
-      $http({
-        method : 'GET',
-        url: final_url
-      }).
-        success(function (data) {
-          deffered.resolve(data);
-        }).
-        error(function(data) {
-          deffered.reject(data);
-        });
-
-      return deffered.promise;
-    };
-
-    // Retrieves histogram for race
+        // Retrieves histogram for race
     this.getRaceHistogram = function(circuit, race) {
-      var deffered = $q.defer();
-      var final_url = self.config.server_url +
-        "/histogram/"+circuit+"/"+race;
-
-      console.log(final_url);
-      $http({
-        method : 'GET',
-        url: final_url
-      }).
-        success(function (data) {
-          deffered.resolve(data);
-        }).
-        error(function(data) {
-          deffered.reject(data);
-        });
-
-      return deffered.promise;
+      var final_url = "histogram/"+circuit+"/"+race;
+      return request_service(final_url)();
     };
-
 
     this.getCircuitInfo = function(circuit) {
-      var defered = $q.defer();
-      var final_url = self.config.server_url +
-        "/circuit_info/"+circuit;
-
-      console.log(final_url);
-      $http({
-        method : 'GET',
-        url: final_url
-      }).
-        success(function (data) {
-          defered.resolve(data);
-        }).
-        error(function(data) {
-          defered.reject(data);
-        });
-
-      return defered.promise;
+      var final_url = "circuit_info/" + circuit;
+      return request_service(final_url)();
     };
 
   });
