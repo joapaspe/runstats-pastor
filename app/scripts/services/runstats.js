@@ -16,7 +16,7 @@ angular.module('runstatsApp')
 
     var self = this;
     self.config = {};
-    self.config.server_url = "http://runstatsserver.herokuapp.com/";
+    self.config.server_url = "http://runstatsserver.herokuapp.com";
     self.config.pending_ops = 0;
 
     var deffered = $q.defer();
@@ -67,7 +67,7 @@ angular.module('runstatsApp')
 
     this.getAllRaceCircuits = function() {
       var deffered = $q.defer();
-      var final_url = self.config.server_url + "all_circuit_races";
+      var final_url = self.config.server_url + "/all_circuit_races";
 
       console.log(final_url);
       $http({
@@ -88,7 +88,7 @@ angular.module('runstatsApp')
     this.getRaceHistogram = function(circuit, race) {
       var deffered = $q.defer();
       var final_url = self.config.server_url +
-        "histogram/"+circuit+"/"+race;
+        "/histogram/"+circuit+"/"+race;
 
       console.log(final_url);
       $http({
@@ -109,7 +109,7 @@ angular.module('runstatsApp')
     this.getCircuitInfo = function(circuit) {
       var defered = $q.defer();
       var final_url = self.config.server_url +
-        "circuit_info/"+circuit;
+        "/circuit_info/"+circuit;
 
       console.log(final_url);
       $http({

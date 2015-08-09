@@ -1,5 +1,4 @@
 'use strict';
-
 /**
  * @ngdoc function
  * @name runstatsApp.controller:RacesCtrl
@@ -7,8 +6,10 @@
  * # RacesCtrl
  * Controller of the runstatsApp
  */
-angular.module('runstatsApp')
-  .controller('RacesCtrl', function ($scope, runstats) {
+
+var app = angular.module('runstatsApp');
+
+app.controller('RacesCtrl', function ($scope, runstats) {
 
     $scope.race_options = {
       "information" : "Race Info",
@@ -34,31 +35,28 @@ angular.module('runstatsApp')
       },
       {
         'name': "Teams",
-        'value': "teams"
+        'value': "teams",
+        'filter': "len"
       },
       {
         'name': "Average Time Official",
-        'value': "oficial_avg"
+        'value': "official_avg",
+        'filter': "time"
       },
       {
         'name': "Best Time Official",
-        'value': "oficial_best"
+        'value': "official_best",
+        'filter': "time"
       },
       {
-        'name': "Average Official Time",
-        'value': "oficial_avg"
-      },
-      {
-        'name': "Best Time Official",
-        'value': "oficial_best"
-      },
-      {
-        'name': "Real Official Time",
-        'value': "real_avg"
+        'name': "Time Real",
+        'value': "real_avg",
+        'filter': "time"
       },
       {
         'name': "Best Time Real",
-        'value': "real_best"
+        'value': "real_best",
+        'filter': "time"
       },
 
 
@@ -67,21 +65,24 @@ angular.module('runstatsApp')
     // Variables
     $scope.current_circuit = null;
     //$scope.something = "something";
-    $scope.something = runstats.something;
     $scope.config = runstats.config;
     $scope.show_info = "None";
     $scope.show_info_race = "information";
-    $scope.set_server = function (name) {
-      $scope.config.server_url = name;
-    };
 
     // Loading the circuits
     $scope.load_data = function () {
       runstats.getCircuits().then(function (data) {
-        $scope.last_query = data;
         $scope.circuits = data;
       });
     };
+
+    function url_change(new_value, old_value) {
+      console.log("URL has changed", old_value, "->", new_value, $scope.config);
+      $scope.load_data();
+
+
+    }
+    $scope.$watch("config.server_url", url_change);
 
     $scope.load_data();
 
@@ -135,13 +136,28 @@ angular.module('runstatsApp')
     $scope.isInfoRace = function(information) {
       return $scope.show_info_race === information;
     };
-  })
-  .filter('distance', function() {
-    return function (input) {
-      var kms = parseInt(input) / 1000;
-      return kms + " kms";
-    };
-  }
-);
+  });
 
+app.filter('race_filter', function($filter) {
+  return function (input, filter) {
+    switch (filter) {
+      case 'len':
+        if (input instanceof Object) {
+         return Object.keys(input).length;
+        }
+        else {
+          return input.length;
+        }
+        break;
+      case 'distance':
+        var kms = parseInt(input)/1000;
+        return kms + " kms";
 
+      case 'time':
+          var date = new Date(1970,0,1).setSeconds(input);
+          return $filter('date')(date,"HH'h' mm'm' ss's'");
+      default:
+            return input;
+    }
+  };
+});
