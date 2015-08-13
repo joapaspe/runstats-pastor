@@ -7,6 +7,16 @@
  * Controller of the runstatsApp
  */
 
+// Utils
+
+function len(input) {
+  if (input instanceof Object) {
+    return Object.keys(input).length;
+  }
+  else {
+    return input.length;
+  }
+}
 var app = angular.module('runstatsApp');
 
 app.controller('RacesCtrl', function ($scope, runstats) {
@@ -72,12 +82,13 @@ app.controller('RacesCtrl', function ($scope, runstats) {
     // Status is an object that holds some useful information
     $scope.status = {
       'data_loaded':false,
+      'error': 0,
     };
     // $Loading data
 
     // Loading the circuits
     $scope.load_data = function () {
-      runstats.getCircuits().then(function (data) {
+      runstats.getCircuits().then(function (data, status) {
        $scope.circuits = data;
        $scope.status.data_loaded = true;
        $scope.setCircuit($scope.current_circuit);
@@ -134,10 +145,13 @@ app.controller('RacesCtrl', function ($scope, runstats) {
       }
       else {
         $scope.show_info = 'race';
+        setInfoRaceCharts(race);
       }
       $scope.selected_race = race;
 
+
     };
+
 
     $scope.showInfoCircuit = function() {
       $scope.show_info = 'circuit';
@@ -147,28 +161,71 @@ app.controller('RacesCtrl', function ($scope, runstats) {
 
     $scope.setInfoRace = function(information) {
       $scope.show_info_race = information;
+
     };
 
     $scope.isInfoRace = function(information) {
       return $scope.show_info_race === information;
     };
-  });
+
+    // Chart utils
+  function setInfoRaceCharts(race) {
+
+    // pie chart data_pie labels_pie
+    $scope.labels_radar = [];
+    $scope.data_radar = [];
+
+
+    var radar_options = [
+      {
+        'name': "Distance",
+        'value': "distance",
+      },
+      {
+        'name': "Participants",
+        'value': "runners"
+      },
+      {
+        'name': "Teams",
+        'value': "teams",
+        'filter': len
+      },
+      {
+        'name': "Average Time Official",
+        'value': "official_avg",
+      },
+      {
+        'name': "Best Time Official",
+        'value': "official_best",
+
+      },
+    ];
+
+    for(var opt in radar_options) {
+      var info_option = radar_options[opt];
+      $scope.labels_radar.push(info_option.name);
+      var value = race[info_option.value];
+      if (info_option.filter) {
+        value = info_option.filter(value);
+      }
+      $scope.data_radar.push(value);
+
+    }
+    console.log($scope.labels_radar, $scope.data_radar);
+    $scope.data_radar = [$scope.data_radar];
+  }
+});
 
 app.filter('race_filter', function($filter) {
   return function (input, filter) {
     switch (filter) {
       case 'len':
-        if (input instanceof Object) {
-         return Object.keys(input).length;
-        }
-        else {
-          return input.length;
-        }
+        return len(input);
         break;
       case 'distance':
         var kms = parseInt(input)/1000;
         return kms + " kms";
-
+        break;
       case 'time':
           var date = new Date(1970,0,1).setSeconds(input);
           return $filter('date')(date,"HH'h' mm'm' ss's'");

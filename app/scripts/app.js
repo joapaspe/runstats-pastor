@@ -18,7 +18,8 @@ angular
     'ngRoute',
     'ngSanitize',
     'ngTouch',
-    'jsonFormatter'
+    'jsonFormatter',
+    'chart.js'
   ])
   .config(function ($routeProvider) {
     $routeProvider

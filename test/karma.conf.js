@@ -32,6 +32,8 @@ module.exports = function(config) {
       'app/bower_components/angular-sanitize/angular-sanitize.js',
       'app/bower_components/angular-touch/angular-touch.js',
       'app/bower_components/json-formatter/dist/json-formatter.js',
+      'app/bower_components/Chart.js/Chart.js',
+      'app/bower_components/angular-chart.js/dist/angular-chart.js',
       'app/bower_components/angular-mocks/angular-mocks.js',
       // endbower
       "app/scripts/**/*.js",

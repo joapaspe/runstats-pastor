@@ -4,8 +4,12 @@ import json
 import sys
 import os
 
+import urllib2
+from BeautifulSoup import BeautifulSoup
+import re
+
 def parse_circuit(indexes, id, name, dst_dir, parser=Cronochip,
-                  update=False, delete=False
+                  update=False, delete=False, dates = []
                   ):
     """
     :return: dumps the circuit data in the dst_dir
@@ -43,6 +47,10 @@ def parse_circuit(indexes, id, name, dst_dir, parser=Cronochip,
         race_summary, race_info = race.parse_race(tag)
 
         race_file = "%s/runners/%s.json" % (dst_dir, tag)
+
+        if dates:
+            race_info["date"] = dates
+
         # 1.Save race_info
         f = open(race_file, "w")
         json.dump(race_info, f)
@@ -80,6 +88,48 @@ def parse_circuit(indexes, id, name, dst_dir, parser=Cronochip,
     f = open(circuit_list_file, "w")
     json.dump(list(circuit_list),f)
     f.close()
+
+
+def get_indexes_from_cronochip(name):
+    '''
+
+    :param name:
+    :return:
+    '''
+    url_page = "http://www.cronochip.com/%s.htm" % name.replace(" ","_")
+
+    ids = []
+    dates = []
+    try:
+        f = urllib2.urlopen(url_page)
+        content = f.read()
+        f.close()
+    except:
+        print >> sys.stderr, "Error Url not found", url_page
+        return False
+
+    parsed_html = BeautifulSoup(content)
+
+    for tr in parsed_html.table.findAll("tr"):
+        if tr.th:
+            continue
+        tds = tr.findAll("td")
+
+        if len(tds)< 3:
+            continue
+
+        name = tds[0].text
+        date = tds[1].text
+        race_url = tds[2].a["href"]
+
+        id = re.search("(\d+)", race_url).groups()[0]
+
+        print name, date, id
+        ids.append(id)
+        dates.append(date)
+
+    return ids, dates
+
 from common import mkdir_p
 from optparse import OptionParser
 
@@ -90,7 +140,7 @@ parser.add_option("--id", dest="id",
                   help="Id-key of the circuit")
 parser.add_option("--name", dest="name",
                   help="Name of the circuit. Real Name")
-parser.add_option("-d", "--dst_dir", dest="dst_dir",
+parser.add_option("-d", "--dst_dir", dest="dst_dir",default="data",
                   help="Directory to set the file.")
 parser.add_option("--update", dest="update",
                   action="store_true",
@@ -112,11 +162,14 @@ if __name__ == '__main__':
     name = options.name
     dst_dir = options.dst_dir
 
-    tags = [line.replace("\n", "") for line in open(findexes)]
-
     for d in ["circuits", "races", "runners"]:
-            mkdir_p(os.path.join(dst_dir,d))
+        mkdir_p(os.path.join(dst_dir,d))
 
-    # Load circuit json
+    dates = []
+    if not findexes:
+        tags, dates = get_indexes_from_cronochip(name)
 
-    parse_circuit(tags, id, name, dst_dir, update=options.update, delete=options.delete)
+    else:
+        tags = [line.replace("\n", "") for line in open(findexes)]
+        # Load circuit json
+    parse_circuit(tags, id, name, dst_dir, update=options.update, delete=options.delete, dates = dates)
