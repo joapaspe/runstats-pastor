@@ -21,10 +21,10 @@ app.controller('RacesCtrl', function ($scope, runstats) {
     // Name value of the information
     // Todo: move this to configuration files
     $scope.info_values = [
-      {
+      /*{
         'name': "Name",
         'value': "name"
-      },
+      },*/
       {
         'name': "Distance",
         'value': "distance",
@@ -138,6 +138,8 @@ app.controller('RacesCtrl', function ($scope, runstats) {
         $scope.show_info = 'race';
         setInfoRaceCharts(race);
         setHistogram(race);
+        setSexChart(race);
+        setTeamsChart(race);
       }
       $scope.selected_race = race;
 
@@ -221,6 +223,82 @@ app.controller('RacesCtrl', function ($scope, runstats) {
         console.log($scope.data_labels);
 
       });
+  }
+
+  function setSexChart(race) {
+
+    var sex = race.sex;
+
+    var labels = [];
+    var values = [];
+
+
+    for (var s in sex) {
+      var csex = sex[s];
+      labels.push(csex.name);
+      values.push(csex.runners);
+    }
+
+  $scope.labels_sex = labels;
+  $scope.data_sex = values;
+
+  }
+
+  function setTeamsChart(race) {
+    // Show the teams most popular
+    var sex = race.teams;
+
+
+    var no_teams = ["INDEPENDIENTE"];
+    var labels = [];
+    var values = [];
+
+    var total = race.runners;
+
+    // Compute runners with and without teams
+
+    var runners_in_team = 0;
+    for(var team in race.teams) {
+
+
+      if (no_teams.indexOf(team) > -1) {
+        continue;
+      }
+      runners_in_team += race.teams[team];
+    }
+
+    var runners_alone = total - runners_in_team;
+    labels = ["With Team", "Without Team"];
+    values = [runners_in_team, runners_alone];
+
+    $scope.labels_teams = labels;
+    $scope.data_teams = values;
+
+    /*for (var i = 0; i < teams; ++i) {
+
+    }*/
+
+    /* Best five teams */
+    var best_labels = [];
+    var best_values = [];
+    var items =  Object.keys(race.teams).map(function(key) {
+      return [race.teams[key], key];
+    });
+
+    /* Reverse sort */
+    items.sort(function(a,b) { return b[0]-a[0]; });
+    var best_five = items.splice(1,15);
+
+    for(var b in best_five) {
+      var label = short_name(best_five[b][1], 20);
+
+      best_labels.push(label);
+      best_values.push(best_five[b][0]);
+    }
+
+    $scope.labels_best_teams = best_labels;
+    $scope.data_best_teams = [best_values];
+
   }
 });
 

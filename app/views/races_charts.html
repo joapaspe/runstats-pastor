@@ -2,6 +2,25 @@
 <div>
   <canvas id="info_radar" class="chart chart-radar" data="data_radar"
           labels="labels_radar"></canvas>
+
+
+  <h4>Arrival Histogram</h4>
   <canvas id="histogram" class="chart chart-bar" data="data_hist"
           labels ="labels_hist"></canvas>
+
+
+  <div class="row">
+    <h4>Team Participation</h4>
+    <div class="col-md-6">
+      <canvas id="sex" class="chart chart-pie" data="data_sex"
+              labels ="labels_sex" legend="true"></canvas>
+    </div>
+    <div class="col-md-6">
+      <canvas id="teams" class="chart chart-pie" data="data_teams"
+              labels ="labels_teams" legend="true"></canvas>
+    </div>
+  </div>
+  <canvas id="best_teams" class="chart chart-bar" data="data_best_teams"
+          labels ="labels_best_teams" legend="false"></canvas>
+
 </div>

@@ -31,7 +31,7 @@
 
       <div class="col-md-9">
         <div ng-show="show_info == 'circuit'">
-          <h4>Information about {{circuit_info.name}}</h4>
+          <h2>{{circuit_info.name}}</h2>
 
         </div>
         <div ng-if="show_info == 'race'">
@@ -40,14 +40,14 @@
 
           <div ng-if="isInfoRace('information')">
             <div class="row">
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <dl ng-repeat="race_data in info_values">
                   <dt>{{race_data.name}}</dt>
                   <dd race-element >{{selected_race[race_data.value]|race_filter:race_data.filter}}
                   </dd>
                 </dl>
               </div>
-              <div class="col-md-6" ng-include="'views/races_charts.html'">
+              <div class="col-md-8" ng-include="'views/races_charts.html'">
               </div>
             </div>
           </div>
