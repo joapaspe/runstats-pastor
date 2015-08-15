@@ -46,7 +46,7 @@ angular.module('runstatsApp')
               name: "Circuit info"
             },
             {
-              url: "histogram/divina2013/429",
+              url: "histogram/429",
               name: "Histogram"
             },
             {

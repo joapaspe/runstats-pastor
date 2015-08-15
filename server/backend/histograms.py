@@ -12,7 +12,7 @@ def toyHistogram():
   return {"values":[50, 40, 30, 10], "labels":["a", "b", "c", "d", "e"]}
 
 ''' Recieves a dict object with the info race and returns and histogram '''
-def getRaceHistogram(race_info, interval=60):
+def getRaceHistogram(race_info, interval=120):
 
   start = MAX_TIME
   end   = 0

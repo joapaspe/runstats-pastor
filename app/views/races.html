@@ -18,18 +18,18 @@
         <button class="btn btn-default" ng-click="showInfoCircuit()">View Circuit info</button>
       </div>
       <h4>Select your race</h4>
-      <div class = "col-md-4">
+      <div class = "col-md-3">
 
         <ul class="nav nav-pills nav-stacked">
           <li ng-repeat="(id, race) in races"
               ng-class="{active:isRaceSelected(race)}"
             >
-            <a ng-click="selectRace(race)" >
+            <a ng-click="selectRace(race)">
               {{race.name}}</a></li>
         </ul>
       </div>
 
-      <div class="col-md-8">
+      <div class="col-md-9">
         <div ng-show="show_info == 'circuit'">
           <h4>Information about {{circuit_info.name}}</h4>
 

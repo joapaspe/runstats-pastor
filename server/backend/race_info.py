@@ -79,15 +79,12 @@ def getRacePaces(race_info, real=True):
 
     return res
 
-def getRaceInfo(circuit, id):
+def getRaceInfo(id):
     # FIXME: Try catch if the file fails
     # TODO:  Use global variable for data
     # TODO: Cache the data...
-    circuit_info = circuits[circuit]
-    if not circuit_info:
-        return None
 
-    race_info = circuit_info["races"][id]
+    race_info = races[id]
 
     if not race_info:
         return None

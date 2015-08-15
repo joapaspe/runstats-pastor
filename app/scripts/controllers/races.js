@@ -7,16 +7,7 @@
  * Controller of the runstatsApp
  */
 
-// Utils
 
-function len(input) {
-  if (input instanceof Object) {
-    return Object.keys(input).length;
-  }
-  else {
-    return input.length;
-  }
-}
 var app = angular.module('runstatsApp');
 
 app.controller('RacesCtrl', function ($scope, runstats) {
@@ -146,6 +137,7 @@ app.controller('RacesCtrl', function ($scope, runstats) {
       else {
         $scope.show_info = 'race';
         setInfoRaceCharts(race);
+        setHistogram(race);
       }
       $scope.selected_race = race;
 
@@ -175,44 +167,60 @@ app.controller('RacesCtrl', function ($scope, runstats) {
     $scope.labels_radar = [];
     $scope.data_radar = [];
 
-
-    var radar_options = [
+    var options = [
       {
         'name': "Distance",
-        'value': "distance",
+        'key': "distance",
+        'norm': 10000
       },
       {
         'name': "Participants",
-        'value': "runners"
+        'key': "runners",
+        'norm': 10000
       },
       {
         'name': "Teams",
-        'value': "teams",
-        'filter': len
+        'key': "teams",
+        'filter': filters.len,
+        'norm': 500
       },
       {
-        'name': "Average Time Official",
-        'value': "official_avg",
+        'name': "Official Time",
+        'key': "official_avg",
+        'norm': 40*60
       },
       {
-        'name': "Best Time Official",
-        'value': "official_best",
-
+        'name': "Average Pace",
+         'func': get_avg_pace,
+        'norm' : function(v) { return 1.0 - (v/300); }
       },
+      {
+        'name': 'Sex',
+        'func': function(race) {
+          var masc = race.sex[0].runners;
+          return masc/race.runners;
+        }
+      }
     ];
 
-    for(var opt in radar_options) {
-      var info_option = radar_options[opt];
-      $scope.labels_radar.push(info_option.name);
-      var value = race[info_option.value];
-      if (info_option.filter) {
-        value = info_option.filter(value);
-      }
-      $scope.data_radar.push(value);
+    var res = get_options(race, options);
+    console.log(res);
 
-    }
-    console.log($scope.labels_radar, $scope.data_radar);
-    $scope.data_radar = [$scope.data_radar];
+    $scope.labels_radar = res[0];
+    $scope.data_radar = [res[1]];
+    console.log($scope.labels_radar, $scope.data_radar[0]);
+  }
+
+  function setHistogram(race) {
+    runstats.getRaceHistogram(race.id).then(function(data){
+        console.log("Histogram", data);
+        $scope.labels_hist = data.histogram.labels;
+        $scope.data_hist = [data.histogram.values];
+
+        console.log($scope.data_hist);
+        console.log($scope.data_labels);
+
+      });
   }
 });
 
@@ -220,7 +228,7 @@ app.filter('race_filter', function($filter) {
   return function (input, filter) {
     switch (filter) {
       case 'len':
-        return len(input);
+        return filters.len(input);
         break;
       case 'distance':
         var kms = parseInt(input)/1000;

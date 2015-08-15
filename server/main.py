@@ -49,11 +49,11 @@ def allCircuitRaces():
   return jsonify(races)
 
 
-@app.route('/histogram/<circuit>/<race_id>')
+@app.route('/histogram/<race_id>')
 @crossdomain(origin='*')
-def histogram(circuit, race_id):
+def histogram(race_id):
 
-  info = race_info.getRaceInfo(circuit, race_id)
+  info = race_info.getRaceInfo(race_id)
 
   hist = histograms.getRaceHistogram(info)
 

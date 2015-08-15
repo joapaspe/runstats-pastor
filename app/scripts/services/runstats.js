@@ -69,8 +69,8 @@ angular.module('runstatsApp')
     this.getAllCircuitRaces = request_service("all_circuit_races");
 
     // Retrieves histogram for race
-    this.getRaceHistogram = function(circuit, race) {
-      var final_url = "histogram/"+circuit+"/"+race;
+    this.getRaceHistogram = function(race) {
+      var final_url = "histogram/"+race;
       return request_service(final_url)();
     };
 
