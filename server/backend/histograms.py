@@ -23,6 +23,9 @@ def getRaceHistogram(race_info, interval=120):
     start = min(start, racer["tofficial"])
     end   = max(end, racer["tofficial"])
 
+    # Trim start
+    start = int(start/interval)*interval
+    end = int(end /interval)*interval
     hist = [0]*(int(end-start)/interval+1)
 
 
@@ -36,8 +39,9 @@ def getRaceHistogram(race_info, interval=120):
     import datetime
     str(datetime.timedelta(seconds=666))
 
-  labels = [str(datetime.timedelta(seconds=start+(i * interval))) for i in range(int(end-start)/interval+1)]
+  time_stamps = [start+(i * interval) for i in range(int(end-start)/interval+1)]
+  labels = [str(datetime.timedelta(seconds=stamp)) for stamp in time_stamps]
 
 
-  return {"labels":labels,"values":hist}
+  return {"labels":labels,"values":hist, "time_stamps":time_stamps}
 

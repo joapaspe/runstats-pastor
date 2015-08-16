@@ -63,12 +63,15 @@ app.controller('RacesCtrl', function ($scope, runstats) {
 
     ];
 
+
     // Variables
     $scope.current_circuit = null;
     //$scope.something = "something";
     $scope.config = runstats.config;
     $scope.show_info = "None";
     $scope.show_info_race = "information";
+
+    $scope.selected_races = [];
 
     // Status is an object that holds some useful information
     $scope.status = {
@@ -93,6 +96,10 @@ app.controller('RacesCtrl', function ($scope, runstats) {
     $scope.$watch("config.server_url", url_change);
 
     $scope.load_data();
+
+    $scope.indexRaceSelected = function (race) {
+      return $scope.selected_races.indexOf(race);
+    };
 
     $scope.isCircuitSelected = function (circuit) {
       return $scope.current_circuit === circuit;
@@ -125,25 +132,79 @@ app.controller('RacesCtrl', function ($scope, runstats) {
       $scope.show_info = "circuit";
     };
 
-    $scope.isRaceSelected = function (race) {
-      return $scope.selected_race === race;
+    $scope.getColorRace = function(race) {
+      var index = $scope.indexRaceSelected(race);
+      if (index <= -1) {
+        return null;
+      }
+      var color;
+      if (index > Chart.defaults.global.colours.length) {
+        // TODO: Color random
+        color = "#F00";
+      }
+      else {
+        color = Chart.defaults.global.colours[index];
+      }
+      return color;
     };
+
+  $scope.selectedStyle = function(race) {
+      var color = $scope.getColorRace(race);
+      if (color === null) {
+        return null;
+      }
+      return {
+        'background-color': color,
+        'color':"#eee"
+      };
+    };
+
+  $scope.selectedTagStyle = function(race) {
+    var color = $scope.getColorRace(race);
+    if (color === null) {
+      return null;
+    }
+    return {
+      'border-bottom-color': color,
+      'border-bottom-style': 'solid',
+      'border-bottom-width':'2px'
+    };
+  };
+
+    $scope.unselectRace =  function(index)
+    {
+      //Remove it
+      $scope.selected_races.splice(index, 1);
+      // Radar
+      $scope.data_radar.splice(index, 1);
+      if ($scope.selected_races.length === 0) {
+        $scope.show_info = 'none';
+      }
+      reAdjustHistogram();
+    };
+
+
+    $scope.isRaceSelected = function (race) {
+      return ($scope.selected_races.indexOf(race) > -1);
+      };
 
     $scope.selectRace = function (race) {
 
-      if (race === null) {
-        $scope.show_info = 'none';
+      var index = $scope.indexRaceSelected(race);
+      if(index > -1) {
+        $scope.unselectRace(index);
       }
-      else {
+      else if (race !== null) {
+        $scope.selected_races.push(race);
         $scope.show_info = 'race';
         setInfoRaceCharts(race);
         setHistogram(race);
         setSexChart(race);
         setTeamsChart(race);
       }
-      $scope.selected_race = race;
-
-
+      else {
+        $scope.show_info = 'none';
+      }
     };
 
 
@@ -162,12 +223,18 @@ app.controller('RacesCtrl', function ($scope, runstats) {
       return $scope.show_info_race === information;
     };
 
+  $scope.show_hist_bars = true;
+  $scope.toggleHist = function() {
+    $scope.show_hist_bars = !$scope.show_hist_bars;
+  }
+
+  $scope.showHistBars = function() {
+    return $scope.show_hist_bars;
+  }
     // Chart utils
   function setInfoRaceCharts(race) {
 
     // pie chart data_pie labels_pie
-    $scope.labels_radar = [];
-    $scope.data_radar = [];
 
     var options = [
       {
@@ -208,21 +275,79 @@ app.controller('RacesCtrl', function ($scope, runstats) {
     var res = get_options(race, options);
     console.log(res);
 
-    $scope.labels_radar = res[0];
-    $scope.data_radar = [res[1]];
+    if ($scope.selected_races.length == 1) {
+      $scope.labels_radar = res[0];
+      $scope.data_radar = [res[1]];
+    }
+    else {
+      $scope.data_radar.push(res[1]);
+    }
+
     console.log($scope.labels_radar, $scope.data_radar[0]);
   }
 
+  function reAdjustHistogram() {
+    if ($scope.selected_races.length === 1) {
+      $scope.labels_hist = $scope.selected_races[0].histogram.labels;
+      $scope.data_hist = [$scope.selected_races[0].histogram.values];
+      return;
+    }
+    else{
+      // Find min and max
+      var max_value = 0;
+      var min_value = 36000;
+      var step = 120;
+      for (var r in $scope.selected_races) {
+        var race = $scope.selected_races[r];
+        max_value = Math.max(max_value, race.histogram.time_stamps[race.histogram.time_stamps.length-1]);
+        min_value = Math.min(min_value, race.histogram.time_stamps[0]);
+      }
+        console.log("Recomputing histogram", max_value, min_value);
+
+      $scope.data_hist = [];
+      var intervals = (max_value-min_value)/step;
+      for (r in $scope.selected_races) {
+        var race = $scope.selected_races[r];
+        var new_hist = [];
+
+        for (var i = 0; i < intervals; ++i) new_hist.push(0);
+
+        // Find the first position
+        var initial = 0;
+        while (race.histogram.time_stamps[0] !== (min_value+initial*step)) {
+          initial++;
+        }
+        for(var i = 0; i < race.histogram.values.length; ++i) {
+          new_hist[initial+i] = race.histogram.values[i];
+        }
+        $scope.data_hist.push(new_hist);
+      }
+
+      //Now the labels
+      $scope.labels_hist = [];
+      for (var stamp = min_value; stamp <=max_value; stamp += step){
+        $scope.labels_hist.push(stamp/step);
+      }
+
+    }
+    return;
+  }
+
   function setHistogram(race) {
-    runstats.getRaceHistogram(race.id).then(function(data){
+
+    if (! race.histogram) {
+      runstats.getRaceHistogram(race.id).then(function (data) {
         console.log("Histogram", data);
-        $scope.labels_hist = data.histogram.labels;
-        $scope.data_hist = [data.histogram.values];
+        race.histogram = {};
+        race.histogram = data.histogram;
 
-        console.log($scope.data_hist);
-        console.log($scope.data_labels);
+        reAdjustHistogram();
+       });
+    }
+    else {
+      reAdjustHistogram();
+    }
 
-      });
   }
 
   function setSexChart(race) {

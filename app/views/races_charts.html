@@ -1,14 +1,34 @@
 <!-- Pie chart-->
 <div>
-  <canvas id="info_radar" class="chart chart-radar" data="data_radar"
-          labels="labels_radar"></canvas>
+  <div class="row">
+    <div class="col-md-4">
+      <dl ng-repeat="race_data in info_values">
+        <dt>{{race_data.name}}</dt>
+        <dd race-element >
+          <span ng-repeat="race in selected_races" ng-style="selectedTagStyle(race)">
+          {{race[race_data.value]|race_filter:race_data.filter}}
+          </span>
+        </dd>
+      </dl>
+    </div>
+    <div class="col-md-8">
+    <canvas id="info_radar" class="chart chart-radar" data="data_radar"
+            labels="labels_radar"></canvas>
+    </div>
+  </div>
+  <h4>Arrival Histogram</h4><span class="btn" ng-click="toggleHist()">{{show_hist_bars}}</span>
 
+  <div ng-if="showHistBars()">
+    bars
+    <canvas id="histogram" class="chart chart-line" data="data_hist"
+            labels ="labels_hist"></canvas>
+  </div>
 
-  <h4>Arrival Histogram</h4>
-  <canvas id="histogram" class="chart chart-bar" data="data_hist"
-          labels ="labels_hist"></canvas>
-
-
+  <div ng-if="!showHistBars()">
+    lines
+    <canvas id="histogram-lines" class="chart chart-bar" data="data_hist"
+            labels ="labels_hist"></canvas>
+  </div>
   <div class="row">
     <h4>Team Participation</h4>
     <div class="col-md-6">

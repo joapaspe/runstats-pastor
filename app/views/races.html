@@ -1,4 +1,5 @@
 <div class="container">
+  <span>Test</span>
   <div ng-if="status.data_loaded">
     <ul class="nav nav-tabs nav-justified">
       <li role="presentation"
@@ -22,9 +23,11 @@
 
         <ul class="nav nav-pills nav-stacked">
           <li ng-repeat="(id, race) in races"
-              ng-class="{active:isRaceSelected(race)}"
+              ng-style="selectedClass(race)"
+
             >
-            <a ng-click="selectRace(race)">
+            <a ng-click="selectRace(race)" ng-style="selectedStyle(race)">
+
               {{race.name}}</a></li>
         </ul>
       </div>
@@ -35,27 +38,19 @@
 
         </div>
         <div ng-if="show_info == 'race'">
-          <h4>Information about: {{selected_race.name}}</h4>
 
+          <!--Names-->
+          <span ng-repeat="race in selected_races" ng-click="selectRace(race)"
+                class="btn btn-default" ng-style="selectedStyle(race)">
+            {{race.name}}
+          </span>
 
           <div ng-if="isInfoRace('information')">
-            <div class="row">
-              <div class="col-md-4">
-                <dl ng-repeat="race_data in info_values">
-                  <dt>{{race_data.name}}</dt>
-                  <dd race-element >{{selected_race[race_data.value]|race_filter:race_data.filter}}
-                  </dd>
-                </dl>
-              </div>
-              <div class="col-md-8" ng-include="'views/races_charts.html'">
-              </div>
+            <div ng-include="'views/races_charts.html'">
             </div>
           </div>
-
         </div>
-
       </div>
-
     </div>
 
 
