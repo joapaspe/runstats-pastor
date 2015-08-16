@@ -60,10 +60,7 @@ app.controller('RacesCtrl', function ($scope, runstats) {
         'filter': "time"
       },
 
-
-    ];
-
-
+   ];
     // Variables
     $scope.current_circuit = null;
     //$scope.something = "something";
@@ -72,6 +69,12 @@ app.controller('RacesCtrl', function ($scope, runstats) {
     $scope.show_info_race = "information";
 
     $scope.selected_races = [];
+    $scope.data_men = [];
+    $scope.data_women = [];
+    $scope.labels_races = [];
+    $scope.data_runners = [];
+    $scope.data_runners_team = [];
+    $scope.data_runners_without_team = [];
 
     // Status is an object that holds some useful information
     $scope.status = {
@@ -177,6 +180,14 @@ app.controller('RacesCtrl', function ($scope, runstats) {
       $scope.selected_races.splice(index, 1);
       // Radar
       $scope.data_radar.splice(index, 1);
+
+       $scope.data_men.splice(index, 1);
+      $scope.data_women.splice(index, 1);
+      $scope.labels_races.splice(index, 1);
+      $scope.data_runners.splice(index, 1);
+      //$scope.data_runners_team..splice(index, 1);
+      //$scope.data_runners_without_team.splice(index, 1);
+
       if ($scope.selected_races.length === 0) {
         $scope.show_info = 'none';
       }
@@ -201,6 +212,7 @@ app.controller('RacesCtrl', function ($scope, runstats) {
         setHistogram(race);
         setSexChart(race);
         setTeamsChart(race);
+        setMenWomenCharts(race);
       }
       else {
         $scope.show_info = 'none';
@@ -285,6 +297,22 @@ app.controller('RacesCtrl', function ($scope, runstats) {
 
     console.log($scope.labels_radar, $scope.data_radar[0]);
   }
+
+  function setMenWomenCharts(race) {
+
+    var men = race.sex[0].runners;
+    var women = race.sex[0].runners;
+    var runners = race.runners;
+
+    $scope.data_men.push(men);
+    $scope.data_women.push(women);
+    $scope.data_runners.push(runners);
+    $scope.labels_races.push(race.name);
+
+    //$scope.labels_women.push(race.name);
+    console.log($scope.data_men, $scope.data_women);
+
+    console.log($scope.labels_men, $scope.labels_women);}
 
   function reAdjustHistogram() {
     if ($scope.selected_races.length === 1) {

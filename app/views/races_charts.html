@@ -2,32 +2,56 @@
 <div>
   <div class="row">
     <div class="col-md-4">
-      <dl ng-repeat="race_data in info_values">
-        <dt>{{race_data.name}}</dt>
-        <dd race-element >
+      <panel title="'Data'">
+        <dl ng-repeat="race_data in info_values">
+          <dt>{{race_data.name}}</dt>
+          <dd race-element >
           <span ng-repeat="race in selected_races" ng-style="selectedTagStyle(race)">
           {{race[race_data.value]|race_filter:race_data.filter}}
           </span>
-        </dd>
-      </dl>
+          </dd>
+        </dl>
     </div>
+    </panel>
     <div class="col-md-8">
-    <canvas id="info_radar" class="chart chart-radar" data="data_radar"
-            labels="labels_radar"></canvas>
+      <canvas id="info_radar" class="chart chart-radar" data="data_radar"
+              labels="labels_radar"></canvas>
     </div>
   </div>
-  <h4>Arrival Histogram</h4><span class="btn" ng-click="toggleHist()">{{show_hist_bars}}</span>
 
-  <div ng-if="showHistBars()">
-    bars
-    <canvas id="histogram" class="chart chart-line" data="data_hist"
-            labels ="labels_hist"></canvas>
-  </div>
+  <panel title="'Arrival Histogram'">
+    <span class="btn" ng-click="toggleHist()">{{show_hist_bars}}</span>
+    <div ng-if="showHistBars()">
+      bars
+      <canvas id="histogram" class="chart chart-line" data="data_hist"
+              labels ="labels_hist"></canvas>
+    </div>
 
-  <div ng-if="!showHistBars()">
-    lines
-    <canvas id="histogram-lines" class="chart chart-bar" data="data_hist"
-            labels ="labels_hist"></canvas>
+    <div ng-if="!showHistBars()">
+      lines
+      <canvas id="histogram-lines" class="chart chart-bar" data="data_hist"
+              labels ="labels_hist"></canvas>
+    </div>
+  </panel>
+
+  <div class="row">
+    <div class="col-md-4">
+      <panel title="'Participants'">
+        <canvas id="runners" class="charts chart-polar-area" data="data_runners" labels="labels_races"></canvas>
+      </panel>
+    </div>
+    <div class="col-md-4">
+      <panel title="'Men'">
+        <canvas id="men" class="chart chart-polar-area" data="data_men" labels="labels_races"></canvas>
+      </panel>
+    </div>
+
+    <div class="col-md-4">
+      <panel title="'Women'">
+        <canvas id="women" class="charts chart-polar-area" data="data_women" labels="labels_races"></canvas>
+      </panel>
+    </div>
+
   </div>
   <div class="row">
     <h4>Team Participation</h4>
@@ -42,5 +66,4 @@
   </div>
   <canvas id="best_teams" class="chart chart-bar" data="data_best_teams"
           labels ="labels_best_teams" legend="false"></canvas>
-
 </div>
