@@ -33,14 +33,14 @@
           <h2>{{circuit_info.name}}</h2>
 
         </div>
-        <div ng-if="show_info == 'race'">
+        <div ng-if="show_info == 'race' && selected_races.length > 0">
 
           <!--Names-->
           <span ng-repeat="race in selected_races" ng-click="selectRace(race)"
                 class="btn btn-default" ng-style="selectedStyle(race)">
             {{race.name}}
           </span>
-
+          <span class="btn btn-default" ng-click="initialize_stats()">Remove Selection</span>
           <div ng-if="isInfoRace('information')">
             <div ng-include="'views/races_charts.html'">
             </div>

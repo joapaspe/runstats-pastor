@@ -3,10 +3,26 @@
   <div class="row">
     <div class="col-md-4">
       <panel title="'Data'">
+<!--
+        <table>
+        <tbody>
+
+        <th ng-repeat="race_data in info_values">
+
+          {{race_data.name}}
+        </th>
+        <tr race-element ng-repeat="race in selected_races" ng-style="selectedTagStyle(race)">
+        <td ng-repeat="race_data in info_values">
+            {{race[race_data.value]|race_filter:race_data.filter}}
+            </td>
+        </tr>
+        </tbody>
+        </table>
+-->
         <dl ng-repeat="race_data in info_values">
           <dt>{{race_data.name}}</dt>
-          <dd race-element >
-          <span ng-repeat="race in selected_races" ng-style="selectedTagStyle(race)">
+          <dd race-element ng-repeat="race in selected_races" ng-style="selectedTagStyle(race)">
+
           {{race[race_data.value]|race_filter:race_data.filter}}
           </span>
           </dd>

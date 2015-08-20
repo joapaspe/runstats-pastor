@@ -68,14 +68,18 @@ app.controller('RacesCtrl', function ($scope, runstats) {
     $scope.show_info = "None";
     $scope.show_info_race = "information";
 
-    $scope.selected_races = [];
-    $scope.data_men = [];
-    $scope.data_women = [];
-    $scope.labels_races = [];
-    $scope.data_runners = [];
-    $scope.data_runners_team = [];
-    $scope.data_runners_without_team = [];
 
+    function initialize_stats() {
+      console.log("Removing lists");
+      $scope.selected_races = [];
+      $scope.data_men = [];
+      $scope.data_women = [];
+      $scope.labels_races = [];
+      $scope.data_runners = [];
+      $scope.data_runners_team = [];
+      $scope.data_runners_without_team = [];
+    }
+    $scope.initialize_stats = initialize_stats;
     // Status is an object that holds some useful information
     $scope.status = {
       'data_loaded':false,
@@ -85,11 +89,13 @@ app.controller('RacesCtrl', function ($scope, runstats) {
 
     // Loading the circuits
     $scope.load_data = function () {
+      initialize_stats();
       runstats.getCircuits().then(function (data, status) {
        $scope.circuits = data;
        $scope.status.data_loaded = true;
        $scope.setCircuit($scope.current_circuit);
       });
+
     };
 
     function url_change(new_value, old_value) {
@@ -181,7 +187,7 @@ app.controller('RacesCtrl', function ($scope, runstats) {
       // Radar
       $scope.data_radar.splice(index, 1);
 
-       $scope.data_men.splice(index, 1);
+      $scope.data_men.splice(index, 1);
       $scope.data_women.splice(index, 1);
       $scope.labels_races.splice(index, 1);
       $scope.data_runners.splice(index, 1);
@@ -193,6 +199,7 @@ app.controller('RacesCtrl', function ($scope, runstats) {
       }
       reAdjustHistogram();
     };
+
 
 
     $scope.isRaceSelected = function (race) {
@@ -215,6 +222,7 @@ app.controller('RacesCtrl', function ($scope, runstats) {
         setMenWomenCharts(race);
       }
       else {
+        initialize_stats();
         $scope.show_info = 'none';
       }
     };
