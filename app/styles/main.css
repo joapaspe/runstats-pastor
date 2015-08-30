@@ -86,3 +86,8 @@ body {
 dl {
   margin-bottom:5px;
 }
+
+.description-panel {
+  overflow-y: scroll;
+  max-height: 256px;
+}

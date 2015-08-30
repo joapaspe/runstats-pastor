@@ -276,7 +276,7 @@ app.controller('RacesCtrl', function ($scope, runstats) {
       {
         'name': "Official Time",
         'key': "official_avg",
-        'norm': 40*60
+        'norm': 50*60
       },
       {
         'name': "Average Pace",
@@ -434,10 +434,6 @@ app.controller('RacesCtrl', function ($scope, runstats) {
 
     $scope.labels_teams = labels;
     $scope.data_teams = values;
-
-    /*for (var i = 0; i < teams; ++i) {
-
-    }*/
 
     /* Best five teams */
     var best_labels = [];
