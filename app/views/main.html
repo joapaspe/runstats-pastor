@@ -1,23 +1,74 @@
-<div class="jumbotron">
-  <h1>Runstats Again!!</h1>
-  <p class="lead">
-    <img src="images/yeoman.png" alt="I'm Yeoman"><br>
-    Always a pleasure scaffolding your apps.
-  </p>
-  <p><a class="btn btn-lg btn-success" ng-href="#/races">Show me the money!<span class="glyphicon glyphicon-ok"></span></a></p>
+<div class="jumbotron landpage">
+    <div class="main_info">
+    <h1>Runstats!</h1>
+    <p class="lead">
+      Analitycs of running races.
+    </p>
+    <p><a class="btn btn-lg btn-success" ng-href="#/races">Check it out!<span class="glyphicon glyphicon-ok"></span></a></p>
+  </div>
 </div>
-
-<div class="row marketing">
-  <h4>HTML5 Boilerplate</h4>
-  <p>
-    HTML5 Boilerplate is a professional front-end template for building fast, robust, and adaptable web apps or sites.
+<div class="container">
+  <h2>What is <i>Runstats?</i></h2>
+  <p>Runstats collects and show general data from some races. Nowadays running and sports live are coming an important of our live.
+    The number of races are increasing as well the number of participants. Different kind of people are starting to run and training,
+    joining to races and check their improvement with tracker applications. In addition, most of the races use chip devices and other
+    trackers and they have a reliable way of measuring the data of each participant.
   </p>
-
-  <h4>Angular</h4>
   <p>
-    AngularJS is a toolset for building the framework most suited to your application development.
+    In Runstats we decided to analyze this data in order to check if we can extract useful and interesting data; plotting graphs and
+    make this sport of running more interesting for the people who love it.
   </p>
+  <h2>What can I see in Runstats?</h2>
+  Runstats it is my personal project and we are working on collecting and showing more important data. Here you can see some of the graphs:
 
-  <h4>Karma</h4>
-  <p>Spectacular Test Runner for JavaScript.</p>
+  <div class="row">
+    <div class="col-md-6">
+      <panel title="'Races Info Chart'">
+      <canvas id="info_radar" class="chart chart-radar" data="sample.data_radar"
+              labels="sample.labels_radar"></canvas>
+      </panel>
+    </div>
+    <div class="col-md-6">
+      <panel title="'Arrival Histogram'">
+        <canvas id="histogram" class="chart chart-line" data="sample.data_hist"
+              labels="sample.labels_hist"></canvas>
+      </panel>
+    </div>
+  </div>
+
+
+  <div class="row">
+    <div class="col-md-4">
+      <panel title="'Participants'">
+        <canvas id="runners" class="charts chart-polar-area" data="sample.data_runners" labels="sample.labels_races"></canvas>
+      </panel>
+    </div>
+    <div class="col-md-4">
+      <panel title="'Men'">
+        <canvas id="men" class="chart chart-polar-area" data="sample.data_men" labels="sample.labels_races"></canvas>
+      </panel>
+    </div>
+
+    <div class="col-md-4">
+      <panel title="'Women'">
+        <canvas id="women" class="charts chart-polar-area" data="sample.data_women" labels="sample.labels_races"></canvas>
+      </panel>
+    </div>
+
+  </div>
+
+
+  <ul>
+   Runstats explodes the idea of circuits. A circuit is a set of races where there is a final score for the whole score.
+  Since the players used to be the same for the circuit is easier to analyze and evaluate the evolution of the people.
+  The races includes are the races of the <i>XII and XIII Circuito Divina Pastora Valencia</i>.
+  </ul>
+
+  <h2>How Runstats work!</h2>
+  Runstats collects the data from the web, crunch it and finally show the summaryze in a fancy graph way.
+  <div class="row">
+    <div class="col-md-4 col-xs-4">
+      <h2></h2>
+    </div>
+  </div>
 </div>

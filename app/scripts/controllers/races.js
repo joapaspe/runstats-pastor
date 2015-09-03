@@ -225,6 +225,19 @@ app.controller('RacesCtrl', function ($scope, runstats) {
         initialize_stats();
         $scope.show_info = 'none';
       }
+
+      var sample = {
+        'data_radar': $scope.data_radar,
+        'labls_radar': $scope.labels_radar,
+        'data_hist': $scope.data_hist,
+        'labels_hist': $scope.labels_hist,
+        'data_runners' : $scope.data_runners,
+        'labels_race' : $scope.labels_races,
+        'data_men' : $scope.data_men,
+        'data_women' : $scope.data_women
+
+      };
+      console.log(JSON.stringify(sample));
     };
 
 
