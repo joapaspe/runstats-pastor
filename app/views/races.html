@@ -1,6 +1,6 @@
 <div class="container">
   <div ng-if="status.data_loaded">
-    <ul class="nav nav-tabs nav-justified">
+    <ul class="nav nav-pills">
       <li role="presentation"
           ng-class="{active:isCircuitSelected(null)}">
         <a ng-click="selectCircuit(null)" >
@@ -37,10 +37,10 @@
 
           <!--Names-->
           <span ng-repeat="race in selected_races" ng-click="selectRace(race)"
-                class="btn btn-default" ng-style="selectedStyle(race)">
+                class="btn btn-sm" ng-style="selectedStyle(race)">
             {{race.name}}
           </span>
-          <span class="btn btn-default" ng-click="initialize_stats()">Remove Selection</span>
+          <span class="btn btn-sm" ng-click="initialize_stats()">Remove Selection</span>
           <div ng-if="isInfoRace('information')">
             <div ng-include="'views/races_charts.html'">
             </div>
