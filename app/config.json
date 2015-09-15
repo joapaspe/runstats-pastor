@@ -1,7 +1,7 @@
 {
   "config":
   {
-    "server_url":"http://localhost:5000",
+    "server_url":"http://runstatsserver.herokuapp.com",
     "servers": {
       "heroku":"http://runstatsserver.herokuapp.com",
       "localhost":"http://localhost:5000"

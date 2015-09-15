@@ -1,74 +1,110 @@
 <div class="jumbotron landpage">
-    <div class="main_info">
-    <h1>Runstats!</h1>
+  <div class="main_info">
+    <h1><runstats />!</h1>
     <p class="lead">
       Analitycs of running races.
     </p>
-    <p><a class="btn btn-lg btn-success" ng-href="#/races">Check it out!<span class="glyphicon glyphicon-ok"></span></a></p>
+    <p><a class="btn btn-lg btn-success btn-material-blue-grey" ng-href="#/races">Check it out!<span class="glyphicon glyphicon-ok"></span></a></p>
   </div>
 </div>
-<div class="container">
-  <h2>What is <i>Runstats?</i></h2>
-  <p>Runstats collects and show general data from some races. Nowadays running and sports live are coming an important of our live.
-    The number of races are increasing as well the number of participants. Different kind of people are starting to run and training,
-    joining to races and check their improvement with tracker applications. In addition, most of the races use chip devices and other
-    trackers and they have a reliable way of measuring the data of each participant.
-  </p>
-  <p>
-    In Runstats we decided to analyze this data in order to check if we can extract useful and interesting data; plotting graphs and
-    make this sport of running more interesting for the people who love it.
-  </p>
-  <h2>What can I see in Runstats?</h2>
-  Runstats it is my personal project and we are working on collecting and showing more important data. Here you can see some of the graphs:
 
-  <div class="row">
-    <div class="col-md-6">
-      <panel title="'Races Info Chart'">
-      <canvas id="info_radar" class="chart chart-radar" data="sample.data_radar"
-              labels="sample.labels_radar"></canvas>
-      </panel>
+<section>
+  <div class="container definition_text">
+    <h2>What is <runstats />?</h2>
+    <p><runstats /> collects and shows general data from several races. Nowadays running and other competitive sports are coming an important part of our lives.
+      The number and frequency of races are increasing as well the number of participants. Different kind of people are starting to run and training,
+      joining to races and they check their improvement with tracker applications. In addition, most of the races use chip devices and other
+      trackers and they have a reliable way of measuring the data of each participant.
+    </p>
+    <p>
+      In <runstats /> we decided to analyze these data in order to extract useful and interesting data; plotting graphs and
+      make this sport of running more interesting for the people who loves it.
+    </p>
+  </div>
+</section>
+<section class="alt-bg">
+  <div class="container ">
+    <h2>What can I see in <runstats />?</h2>
+    <runstats /> is my personal project and we are working on collecting and showing more relevant data. Here you can how the graphs looks like:
+
+    <div class="row">
+      <div class="col-md-6">
+        <panel title="'Races Info Chart'" >
+          <canvas id="info_radar" class="chart chart-radar" data="sample.data_radar"
+                  labels="sample.labels_radar"></canvas>
+        </panel>
+      </div>
+      <div class="col-md-6">
+        <panel title="'Arrival Histogram'">
+          <canvas id="histogram" class="chart chart-line" data="sample.data_hist"
+                  labels="sample.labels_hist"></canvas>
+        </panel>
+      </div>
     </div>
-    <div class="col-md-6">
-      <panel title="'Arrival Histogram'">
-        <canvas id="histogram" class="chart chart-line" data="sample.data_hist"
-              labels="sample.labels_hist"></canvas>
-      </panel>
+    <div class="row">
+      <div class="col-md-4">
+        <panel title="'Participants'">
+          <canvas id="runners" class="charts chart-polar-area" data="sample.data_runners" labels="sample.labels_races"></canvas>
+        </panel>
+      </div>
+      <div class="col-md-4">
+        <panel title="'Men'">
+          <canvas id="men" class="chart chart-polar-area" data="sample.data_men" labels="sample.labels_races"></canvas>
+        </panel>
+      </div>
+
+      <div class="col-md-4">
+        <panel title="'Women'">
+          <canvas id="women" class="charts chart-polar-area" data="sample.data_women" labels="sample.labels_races"></canvas>
+        </panel>
+      </div>
+      <ul>
+        <li><runstats /> explodes the idea of circuits. A circuit is a set of races where there is a final score for the whole score.
+          Since the players used to be the same for the circuit is easier to analyze and evaluate the evolution of the people.
+          The races includes are the races of the <i>XII and XIII Circuito Divina Pastora Valencia</i>.</li>
+      </ul>
     </div>
   </div>
+</section>
+<section>
+  <div class="container">
 
+    <h2>How do <runstats /> work?</h2>
+    <h4><runstats /> collects the data from the web, crunches it and finally showes the summary in a fancy way.</h4>
+    <div class="row">
+      <div class="col-md-4 col-xs-4">
+        <img src="/images/parser.png" class="img-responsive img-rounded"/>
+        <h4>Extract data from the classifications</h4>
+        <runstats /> explore the races results and extracts and stores the data in a useful structure for later exploration.
+        <a href="https://github.com/joapaspe/runstats-pastor/tree/master/server">Here you can check the web parser and data extractor</a>.
 
-  <div class="row">
-    <div class="col-md-4">
-      <panel title="'Participants'">
-        <canvas id="runners" class="charts chart-polar-area" data="sample.data_runners" labels="sample.labels_races"></canvas>
-      </panel>
-    </div>
-    <div class="col-md-4">
-      <panel title="'Men'">
-        <canvas id="men" class="chart chart-polar-area" data="sample.data_men" labels="sample.labels_races"></canvas>
-      </panel>
-    </div>
-
-    <div class="col-md-4">
-      <panel title="'Women'">
-        <canvas id="women" class="charts chart-polar-area" data="sample.data_women" labels="sample.labels_races"></canvas>
-      </panel>
-    </div>
-
-  </div>
-
-
-  <ul>
-   Runstats explodes the idea of circuits. A circuit is a set of races where there is a final score for the whole score.
-  Since the players used to be the same for the circuit is easier to analyze and evaluate the evolution of the people.
-  The races includes are the races of the <i>XII and XIII Circuito Divina Pastora Valencia</i>.
-  </ul>
-
-  <h2>How Runstats work!</h2>
-  Runstats collects the data from the web, crunch it and finally show the summaryze in a fancy graph way.
-  <div class="row">
-    <div class="col-md-4 col-xs-4">
-      <h2></h2>
+      </div>
+      <div class="col-md-4 col-xs-4">
+        <img src="/images/services.png" class="img-responsive img-rounded"/>
+        <h4>Crunching and serving the data</h4>
+        The stored data is processed by our services and it communicates with the final application (web) by <a href="#/web_services"><i>Restful</i> web services.</a>
+      </div>
+      <div class="col-md-4 col-xs-4">
+        <img src="/images/charts.png" class="img-responsive img-rounded"/>
+        <h4>Receive the data and plot the charts</h4>
+        The final applications uses <a href="https://angularjs.org/"> AngularJS</a> and other
+        <a href="https://github.com/joapaspe/runstats-pastor/blob/master/bower.json">technologies.</a>
+        It connects to the server to extract the info and finally plots the data in nice charts.
+        <a href="#/web_services">Take a look and explore the web services!</a>
+      </div>
     </div>
   </div>
-</div>
+</section>
+<section id="disclaimer" class="alt-bg">
+  <div class="container">
+    <h2>Disclaimer</h2>
+    <ul>
+      <li> <runstats /> is my personal project and in any case n. With this project I have to main objectives:
+        <ul>
+          <li>To show useful information about races, summarize and explore the data.</li>
+          <li>An learn; learn web technologies, explore the data and apply my knwoledge to this task.</li>
+        </ul>
+      <li>The data is extracted from public webpages where anybody could access. Moreover, personal names and identifying data are not stored in our databases. In case I infringe any protection data law or copyright please contact me at joapaspe _at_ gmail.com .</li>
+    </ul>
+  </div>
+</section>

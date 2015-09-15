@@ -31,14 +31,16 @@ body {
 }
 
 .main_info {
-  background-color: rgba(255,255,255,0.7);
+  background-color: rgba(255,255,255,0.8);
   display: inline-block;
+  margin: auto 0 auto 0;
   border-radius: 10px;
   border: 3px hidden #fff;
   padding-left: 30px;
   padding-right: 30px;
   padding-top: 0px;
   padding-bottom: 0px;
+  color: #607d8b;
 
   /*position: absolute;*/
   /*float: left;*/
@@ -105,13 +107,26 @@ dl {
 .description-panel {
   overflow-y: scroll;
   max-height: 256px;
+
 }
 
 
 .landpage {
   border-bottom: 1px solid #e5e5e5;
   background: url("/images/duo_run.jpg");
+
   background-repeat: no-repeat;
   background-size:100%;
   background-position: center;
+  height:64vh;
+  width:100%;
+
+}
+
+.definition_text {
+  height:30vh;
+}
+.alt-bg {
+  background-color: #607d8b;
+  color:#FFF;
 }

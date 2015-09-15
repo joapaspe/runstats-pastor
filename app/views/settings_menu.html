@@ -1,13 +1,21 @@
 <ul class="nav navbar-nav navbar-right" ng-controller="SettingsCtrl">
-    <li class="navbar-text">v{{version}}</li>
-    <!--<li class="navbar-text">Server Url: {{config.server_url}}</li>-->
+  <li class="navbar-text">v{{version}}</li>
+  <!--<li class="navbar-text">Server Url: {{config.server_url}}</li>-->
 
-    <li class="dropdown">
-        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{config.server_url}} <span class="badge">{{config.pending_ops}}</span> <span class="caret"></span></a>
-        <ul class="dropdown-menu">
-            <li ng-repeat="(key, value) in config.servers" ng-click="change_server(value)"><a>{{key}}</a></li>
-        </ul>
-    </li>
+  <li class="dropdown">
+    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{config.server_url}} <span class="badge">{{config.pending_ops}}</span> <span class="caret"></span></a>
+    <ul class="dropdown-menu">
+      <li ng-repeat="(key, value) in config.servers" ng-click="change_server(value)"><a>{{key}}</a></li>
+    </ul>
+  </li>
+  <li>
+    <a href="https://github.com/joapaspe/runstats-pastor" target="_blank">
+      <!--    <img src="images/c2769f9c.GitHub-Mark-64px.png" class="img-responsive center-block" alt="github"/>-->
+      <i class="fa fa-2x fa-github"></i>
+    </a>
+  </li>
 
-    <hr>
+  <hr>
 </ul>
+
+
