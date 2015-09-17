@@ -11,21 +11,25 @@
 <section>
   <div class="container definition_text">
     <h2>What is <runstats />?</h2>
-    <p><runstats /> collects and shows general data from several races. Nowadays running and other competitive sports are coming an important part of our lives.
-      The number and frequency of races are increasing as well the number of participants. Different kind of people are starting to run and training,
-      joining to races and they check their improvement with tracker applications. In addition, most of the races use chip devices and other
+    <p><runstats /> collects and shows general data from several races.
+      Nowadays running and other competitive sports are becoming an important part of our lives.
+      The number and frequency of races are increasing as well as the number of participants.
+      Different kind of people are starting running and traininig,
+      joining races and checking their improvement with tracking devices.
+      In addition, most of the races use provide devices and other
       trackers and they have a reliable way of measuring the data of each participant.
     </p>
     <p>
-      In <runstats /> we decided to analyze these data in order to extract useful and interesting data; plotting graphs and
-      make this sport of running more interesting for the people who loves it.
+      In <runstats /> we decided to analyze these data in order to extract useful and interesting information; plotting graphs and
+      making this sport of running more interesting for people who love it.
     </p>
   </div>
 </section>
 <section class="alt-bg">
   <div class="container ">
     <h2>What can I see in <runstats />?</h2>
-    <runstats /> is my personal project and we are working on collecting and showing more relevant data. Here you can how the graphs looks like:
+    <runstats /> is my personal project and I am working on collecting and showing more relevant data.
+    Here you can see how some data graphs look:
 
     <div class="row">
       <div class="col-md-6">
@@ -59,9 +63,9 @@
         </panel>
       </div>
       <ul>
-        <li><runstats /> explodes the idea of circuits. A circuit is a set of races where there is a final score for the whole score.
-          Since the players used to be the same for the circuit is easier to analyze and evaluate the evolution of the people.
-          The races includes are the races of the <i>XII and XIII Circuito Divina Pastora Valencia</i>.</li>
+        <li><runstats /> explores the idea of circuits. A circuit is formed by several races where there is a final classification for the whole circuit.
+          Since the participants are often the same in each race, it is easier to analyze and evaluate their progress.
+          The races included so far correspond to the <i>XII and XIII Circuito Divina Pastora Valencia</i>.</li>
       </ul>
     </div>
   </div>
@@ -69,25 +73,24 @@
 <section>
   <div class="container">
 
-    <h2>How do <runstats /> work?</h2>
-    <h4><runstats /> collects the data from the web, crunches it and finally showes the summary in a fancy way.</h4>
+    <h2>How does <runstats /> work?</h2>
+    <h4><runstats /> collects data from the web, crunches it and finally shows the summary in a fancy way.</h4>
     <div class="row">
       <div class="col-md-4 col-xs-4">
-        <img src="/images/parser.png" class="img-responsive img-rounded"/>
+        <img src="/images/parser.png" class="img-responsive img-rounded" style="height:144px"/>
         <h4>Extract data from the classifications</h4>
-        <runstats /> explore the races results and extracts and stores the data in a useful structure for later exploration.
+        <runstats /> explores the results of each race, extracts and stores the data in a useful structure for later exploration.
         <a href="https://github.com/joapaspe/runstats-pastor/tree/master/server">Here you can check the web parser and data extractor</a>.
-
       </div>
       <div class="col-md-4 col-xs-4">
-        <img src="/images/services.png" class="img-responsive img-rounded"/>
+        <img src="/images/services.png" class="img-responsive img-rounded" style="height:144px"/>
         <h4>Crunching and serving the data</h4>
-        The stored data is processed by our services and it communicates with the final application (web) by <a href="#/web_services"><i>Restful</i> web services.</a>
+        The stored data is processed by our services and it communicates with the final application (web) by <a href="#/web_services" style="height:144px"><i>Restful</i> web services.</a>
       </div>
       <div class="col-md-4 col-xs-4">
         <img src="/images/charts.png" class="img-responsive img-rounded"/>
-        <h4>Receive the data and plot the charts</h4>
-        The final applications uses <a href="https://angularjs.org/"> AngularJS</a> and other
+        <h4>Receive data and plot the charts</h4>
+        The final application uses <a href="https://angularjs.org/"> AngularJS</a> and other
         <a href="https://github.com/joapaspe/runstats-pastor/blob/master/bower.json">technologies.</a>
         It connects to the server to extract the info and finally plots the data in nice charts.
         <a href="#/web_services">Take a look and explore the web services!</a>
@@ -99,12 +102,16 @@
   <div class="container">
     <h2>Disclaimer</h2>
     <ul>
-      <li> <runstats /> is my personal project and in any case n. With this project I have to main objectives:
+      <li> <runstats /> is my personal project and in any case I am trying to make economical profit of it.</li>
+
+        <li>With this project I have two main objectives:
         <ul>
           <li>To show useful information about races, summarize and explore the data.</li>
-          <li>An learn; learn web technologies, explore the data and apply my knwoledge to this task.</li>
+          <li>And learn: learn web technologies, explore the data and apply my knowledge to this task.</li>
         </ul>
-      <li>The data is extracted from public webpages where anybody could access. Moreover, personal names and identifying data are not stored in our databases. In case I infringe any protection data law or copyright please contact me at joapaspe _at_ gmail.com .</li>
+      <li>The data is extracted from public webpages which anybody can access.
+      Moreover, personal names and identifying data are not stored in our databases.
+      In case of suspicion of infringement of any data protection law or copyright please contact me at joapaspe _at_ gmail.com .</li>
     </ul>
   </div>
 </section>
