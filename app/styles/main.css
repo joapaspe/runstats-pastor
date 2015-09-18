@@ -99,6 +99,12 @@ body {
   }
 }
 
+@media(max-width:992px) {
+  .nav > li > a {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+}
 /*Reduce description margin*/
 dl {
   margin-bottom:5px;
@@ -118,13 +124,13 @@ dl {
   background-repeat: no-repeat;
   background-size:100%;
   background-position: center;
-  height:64vh;
+  min-height:64vh;
   width:100%;
 
 }
 
 .definition_text {
-  height:30vh;
+  min-height:30vh;
 }
 .alt-bg {
   background-color: #607d8b;

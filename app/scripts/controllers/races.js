@@ -351,7 +351,7 @@ app.controller('RacesCtrl', function ($scope, runstats) {
         max_value = Math.max(max_value, race.histogram.time_stamps[race.histogram.time_stamps.length-1]);
         min_value = Math.min(min_value, race.histogram.time_stamps[0]);
       }
-        console.log("Recomputing histogram", max_value, min_value);
+      console.log("Recomputing histogram", max_value, min_value);
 
       $scope.data_hist = [];
       var intervals = (max_value-min_value)/step;
@@ -359,7 +359,10 @@ app.controller('RacesCtrl', function ($scope, runstats) {
         var race = $scope.selected_races[r];
         var new_hist = [];
 
-        for (var i = 0; i < intervals; ++i) new_hist.push(0);
+        for (var i = 0; i < intervals; ++i)
+        {
+          new_hist.push(0);
+        }
 
         // Find the first position
         var initial = 0;
@@ -369,13 +372,17 @@ app.controller('RacesCtrl', function ($scope, runstats) {
         for(var i = 0; i < race.histogram.values.length; ++i) {
           new_hist[initial+i] = race.histogram.values[i];
         }
+
         $scope.data_hist.push(new_hist);
       }
 
       //Now the labels
       $scope.labels_hist = [];
       for (var stamp = min_value; stamp <=max_value; stamp += step){
-        $scope.labels_hist.push(stamp/step);
+        var pos = stamp/step;
+        var second = pos * step;
+        var label = to_HHMMSS(second);
+        $scope.labels_hist.push(label);
       }
 
     }

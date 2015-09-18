@@ -39,15 +39,15 @@
   </div>
 
   <panel title="'Arrival Histogram'">
-    <span class="btn" ng-click="toggleHist()">{{show_hist_bars}}</span>
+
     <div ng-if="showHistBars()">
-      bars
+      <span class="btn" ng-click="toggleHist()">Show bars</span>
       <canvas id="histogram" class="chart chart-line" data="data_hist"
               labels ="labels_hist"></canvas>
     </div>
 
     <div ng-if="!showHistBars()">
-      lines
+      <span class="btn" ng-click="toggleHist()">Show lines</span>
       <canvas id="histogram-lines" class="chart chart-bar" data="data_hist"
               labels ="labels_hist"></canvas>
     </div>
