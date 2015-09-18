@@ -11,7 +11,7 @@
 <section>
   <div class="container definition_text">
     <h2>What is <runstats />?</h2>
-    <p><runstats /> collects and shows general data from several races.
+    <p class="lead"><runstats /> collects and shows general data from several races.
       Nowadays running and other competitive sports are becoming an important part of our lives.
       The number and frequency of races are increasing as well as the number of participants.
       Different kind of people are starting running and traininig,
@@ -19,26 +19,26 @@
       In addition, most of the races use provide devices and other
       trackers and they have a reliable way of measuring the data of each participant.
     </p>
-    <p>
+    <blockquote>
       In <runstats /> we decided to analyze these data in order to extract useful and interesting information; plotting graphs and
       making this sport of running more interesting for people who love it.
-    </p>
+    </blockquote>
   </div>
 </section>
 <section class="alt-bg">
   <div class="container ">
     <h2>What can I see in <runstats />?</h2>
-    <runstats /> is my personal project and I am working on collecting and showing more relevant data.
+    <p class="lead"><runstats /> is my personal project and I am working on collecting and showing more relevant data.
     Here you can see how some data graphs look:
-
+    </p>
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-md-6 col-xs-6">
         <panel title="'Races Info Chart'" >
           <canvas id="info_radar" class="chart chart-radar" data="sample.data_radar"
                   labels="sample.labels_radar"></canvas>
         </panel>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-6 col-xs-6">
         <panel title="'Arrival Histogram'">
           <canvas id="histogram" class="chart chart-line" data="sample.data_hist"
                   labels="sample.labels_hist"></canvas>
@@ -46,27 +46,27 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-md-4">
+      <div class="col-md-4 col-xs-4">
         <panel title="'Participants'">
           <canvas id="runners" class="charts chart-polar-area" data="sample.data_runners" labels="sample.labels_races"></canvas>
         </panel>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-4 col-xs-4">
         <panel title="'Men'">
           <canvas id="men" class="chart chart-polar-area" data="sample.data_men" labels="sample.labels_races"></canvas>
         </panel>
       </div>
 
-      <div class="col-md-4">
+      <div class="col-md-4 col-xs-4">
         <panel title="'Women'">
           <canvas id="women" class="charts chart-polar-area" data="sample.data_women" labels="sample.labels_races"></canvas>
         </panel>
       </div>
-      <ul>
-        <li><runstats /> explores the idea of circuits. A circuit is formed by several races where there is a final classification for the whole circuit.
+      <div>
+        <p class="lead"><runstats /> explores the idea of circuits. A circuit is formed by several races where there is a final classification for the whole circuit.
           Since the participants are often the same in each race, it is easier to analyze and evaluate their progress.
-          The races included so far correspond to the <i>XII and XIII Circuito Divina Pastora Valencia</i>.</li>
-      </ul>
+          The races included so far correspond to the <i>XII and XIII Circuito Divina Pastora Valencia</i>.</p>
+      </div>
     </div>
   </div>
 </section>
