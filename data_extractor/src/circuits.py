@@ -42,14 +42,18 @@ def parse_circuit(indexes, id, name, dst_dir, parser=Cronochip,
     for tag in indexes:
         if tag in race_list:
             print >> sys.stderr, "The race %s already exists" % (tag)
-            if not update:
+            if update:
                 continue
-        race_summary, race_info = race.parse_race(tag)
+        try:
+            race_summary, race_info = race.parse_race(tag)
+        except:
+            print "Problem parsing the race"
+            continue
 
         race_file = "%s/runners/%s.json" % (dst_dir, tag)
 
         if dates:
-            race_info["date"] = dates
+            race_summary["date"] = dates
 
         # 1.Save race_info
         f = open(race_file, "w")
@@ -97,7 +101,7 @@ def get_indexes_from_cronochip(name):
     :return:
     '''
     url_page = "http://www.cronochip.com/%s.htm" % name.replace(" ","_")
-
+    print "Loading from", url_page
     ids = []
     dates = []
     try:
@@ -122,7 +126,11 @@ def get_indexes_from_cronochip(name):
         date = tds[1].text
         race_url = tds[2].a["href"]
 
-        id = re.search("(\d+)", race_url).groups()[0]
+        #TODO Decide is sportmaniacs or cronochip
+        try:
+            id = re.search("(\d+)", race_url).groups()[0]
+        except:
+            continue
 
         print name, date, id
         ids.append(id)

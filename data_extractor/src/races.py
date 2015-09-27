@@ -39,7 +39,7 @@ class Cronochip(Race):
         race_data = {
                 "distance": 0,
                 "name": "tag",
-                "id": "tag",
+                "id": tag,
                 "teams": 0,
                 "real_best": 0,
                 "official_best": 0,
