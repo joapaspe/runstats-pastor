@@ -1,23 +1,31 @@
 <div class="container">
   <div ng-if="status.data_loaded">
-    <ul class="nav nav-pills">
-      <li role="presentation"
-          ng-class="{active:isCircuitSelected(null)}">
-        <a ng-click="selectCircuit(null)" >
-          All races</a></li>
 
-      <li ng-repeat="(id, circuit) in circuits"
-          ng-class="{active:isCircuitSelected(id)}"
-        >
-        <a ng-click="selectCircuit(id)" >
-          {{circuit}}</a></li>
-    </ul>
+    <div>
+      <ul class="nav nav-pills">
+        <li role="presentation"
+            ng-class="{active:isCircuitSelected(null)}">
+          <a ng-click="selectCircuit(null)" >
+            All races</a></li>
+
+        <li ng-repeat="(id, circuit) in circuits"
+            ng-class="{active:isCircuitSelected(id)}">
+          <a ng-click="selectCircuit(id)" >
+            {{circuit}}</a></li>
+      </ul>
+
+    </div>
 
     <div class="row">
       <div ng-show="!isCircuitSelected(null)">
         <button class="btn btn-default" ng-click="showInfoCircuit()">View Circuit info</button>
       </div>
+      <div class="help-tip">
+        <p>You can filter by circuit, selecting one of the available circuits.</p>
+      </div>
       <h4>Select your race</h4>
+
+
       <div class = "col-md-3">
 
         <ul class="nav nav-pills nav-stacked">
@@ -34,6 +42,12 @@
       <div class="col-md-9">
         <div ng-show="show_info == 'circuit'">
           <h2>{{circuit_info.name}}</h2>
+        </div>
+        <div class="help-tip">
+          <p>You can select one of more races.<br/>
+          Each race is identified by its color on the list</br/>
+          The arrival histogram show how many people have finished the race at each interval (2 min).<br/>
+          The Team participation info is only relative to the last race.</p>
         </div>
         <div ng-if="show_info == 'race' && selected_races.length > 0">
 

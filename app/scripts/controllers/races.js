@@ -12,161 +12,161 @@ var app = angular.module('runstatsApp');
 
 app.controller('RacesCtrl', function ($scope, runstats) {
 
-    $scope.race_options = {
-      "information" : "Race Info",
-      "histogram" : "Histogram"
-    };
+  $scope.race_options = {
+    "information" : "Race Info",
+    "histogram" : "Histogram"
+  };
 
-    // Info showing
-    // Name value of the information
-    // Todo: move this to configuration files
-    $scope.info_values = [
-      /*{
-        'name': "Name",
-        'value': "name"
-      },*/
-      {
-        'name': "Distance",
-        'value': "distance",
-        'filter': "distance"
-      },
-      {
-        'name': "Participants",
-        'value': "runners"
-      },
-      {
-        'name': "Teams",
-        'value': "teams",
-        'filter': "len"
-      },
-      {
-        'name': "Average Time Official",
-        'value': "official_avg",
-        'filter': "time"
-      },
-      {
-        'name': "Best Time Official",
-        'value': "official_best",
-        'filter': "time"
-      },
-      {
-        'name': "Time Real",
-        'value': "real_avg",
-        'filter': "time"
-      },
-      {
-        'name': "Best Time Real",
-        'value': "real_best",
-        'filter': "time"
-      },
+  // Info showing
+  // Name value of the information
+  // Todo: move this to configuration files
+  $scope.info_values = [
+    /*{
+     'name': "Name",
+     'value': "name"
+     },*/
+    {
+      'name': "Distance",
+      'value': "distance",
+      'filter': "distance"
+    },
+    {
+      'name': "Participants",
+      'value': "runners"
+    },
+    {
+      'name': "Teams",
+      'value': "teams",
+      'filter': "len"
+    },
+    {
+      'name': "Average Time Official",
+      'value': "official_avg",
+      'filter': "time"
+    },
+    {
+      'name': "Best Time Official",
+      'value': "official_best",
+      'filter': "time"
+    },
+    {
+      'name': "Time Real",
+      'value': "real_avg",
+      'filter': "time"
+    },
+    {
+      'name': "Best Time Real",
+      'value': "real_best",
+      'filter': "time"
+    },
 
-   ];
-    // Variables
-    $scope.current_circuit = null;
-    //$scope.something = "something";
-    $scope.config = runstats.config;
-    $scope.show_info = "None";
-    $scope.show_info_race = "information";
+  ];
+  // Variables
+  $scope.current_circuit = null;
+  //$scope.something = "something";
+  $scope.config = runstats.config;
+  $scope.show_info = "None";
+  $scope.show_info_race = "information";
 
 
-    function initialize_stats() {
-      console.log("Removing lists");
-      $scope.selected_races = [];
-      $scope.data_men = [];
-      $scope.data_women = [];
-      $scope.labels_races = [];
-      $scope.data_runners = [];
-      $scope.data_runners_team = [];
-      $scope.data_runners_without_team = [];
-    }
-    $scope.initialize_stats = initialize_stats;
-    // Status is an object that holds some useful information
-    $scope.status = {
-      'data_loaded':false,
-      'error': 0,
-    };
-    // $Loading data
+  function initialize_stats() {
+    console.log("Removing lists");
+    $scope.selected_races = [];
+    $scope.data_men = [];
+    $scope.data_women = [];
+    $scope.labels_races = [];
+    $scope.data_runners = [];
+    $scope.data_runners_team = [];
+    $scope.data_runners_without_team = [];
+  }
+  $scope.initialize_stats = initialize_stats;
+  // Status is an object that holds some useful information
+  $scope.status = {
+    'data_loaded':false,
+    'error': 0,
+  };
+  // $Loading data
 
-    // Loading the circuits
-    $scope.load_data = function () {
-      initialize_stats();
-      runstats.getCircuits().then(function (data, status) {
-       $scope.circuits = data;
-       $scope.status.data_loaded = true;
-       $scope.setCircuit($scope.current_circuit);
-      });
+  // Loading the circuits
+  $scope.load_data = function () {
+    initialize_stats();
+    runstats.getCircuits().then(function (data, status) {
+      $scope.circuits = data;
+      $scope.status.data_loaded = true;
+      $scope.setCircuit($scope.current_circuit);
+    });
 
-    };
+  };
 
-    function url_change(new_value, old_value) {
-      console.log("URL has changed", old_value, "->", new_value, $scope.config);
-      $scope.load_data();
-    }
-    $scope.$watch("config.server_url", url_change);
-
+  function url_change(new_value, old_value) {
+    console.log("URL has changed", old_value, "->", new_value, $scope.config);
     $scope.load_data();
+  }
+  $scope.$watch("config.server_url", url_change);
 
-    $scope.indexRaceSelected = function (race) {
-      return $scope.selected_races.indexOf(race);
-    };
+  $scope.load_data();
 
-    $scope.isCircuitSelected = function (circuit) {
-      return $scope.current_circuit === circuit;
-    };
+  $scope.indexRaceSelected = function (race) {
+    return $scope.selected_races.indexOf(race);
+  };
+
+  $scope.isCircuitSelected = function (circuit) {
+    return $scope.current_circuit === circuit;
+  };
 
 
-    /**
-     * selectCircuit(circuit() load the races and the info from the races
-     * @param circuit
-     */
-    $scope.selectCircuit = function (circuit) {
-      $scope.current_circuit = circuit;
-      $scope.setCircuit(circuit);
-    };
+  /**
+   * selectCircuit(circuit() load the races and the info from the races
+   * @param circuit
+   */
+  $scope.selectCircuit = function (circuit) {
+    $scope.current_circuit = circuit;
+    $scope.setCircuit(circuit);
+  };
 
-    $scope.setCircuit = function (circuit) {
-      $scope.selectRace(null);
-      if (circuit === null) {
-        runstats.getAllRaces().then(function (data) {
-          $scope.races = data.races;
-        });
-        return;
-      }
-
-      runstats.getCircuitInfo(circuit).then(function (data) {
-        $scope.circuit_info = data.circuit;
-        $scope.last_query = data.circuit;
-        $scope.races = $scope.circuit_info.races;
+  $scope.setCircuit = function (circuit) {
+    $scope.selectRace(null);
+    if (circuit === null) {
+      runstats.getAllRaces().then(function (data) {
+        $scope.races = data.races;
       });
-      $scope.show_info = "circuit";
-    };
+      return;
+    }
 
-    $scope.getColorRace = function(race) {
-      var index = $scope.indexRaceSelected(race);
-      if (index <= -1) {
-        return null;
-      }
-      var color;
-      if (index > Chart.defaults.global.colours.length) {
-        // TODO: Color random
-        color = "#F00";
-      }
-      else {
-        color = Chart.defaults.global.colours[index];
-      }
-      return color;
-    };
+    runstats.getCircuitInfo(circuit).then(function (data) {
+      $scope.circuit_info = data.circuit;
+      $scope.last_query = data.circuit;
+      $scope.races = $scope.circuit_info.races;
+    });
+    $scope.show_info = "circuit";
+  };
+
+  $scope.getColorRace = function(race) {
+    var index = $scope.indexRaceSelected(race);
+    if (index <= -1) {
+      return null;
+    }
+    var color;
+    if (index > Chart.defaults.global.colours.length) {
+      // TODO: Color random
+      color = "#F00";
+    }
+    else {
+      color = Chart.defaults.global.colours[index];
+    }
+    return color;
+  };
 
   $scope.selectedStyle = function(race) {
-      var color = $scope.getColorRace(race);
-      if (color === null) {
-        return null;
-      }
-      return {
-        'background-color': color,
-        'color':"#eee"
-      };
+    var color = $scope.getColorRace(race);
+    if (color === null) {
+      return null;
+    }
+    return {
+      'background-color': color,
+      'color':"#eee"
     };
+  };
 
   $scope.selectedTagStyle = function(race) {
     var color = $scope.getColorRace(race);
@@ -180,81 +180,81 @@ app.controller('RacesCtrl', function ($scope, runstats) {
     };
   };
 
-    $scope.unselectRace =  function(index)
-    {
-      //Remove it
-      $scope.selected_races.splice(index, 1);
-      // Radar
-      $scope.data_radar.splice(index, 1);
+  $scope.unselectRace =  function(index)
+  {
+    //Remove it
+    $scope.selected_races.splice(index, 1);
+    // Radar
+    $scope.data_radar.splice(index, 1);
 
-      $scope.data_men.splice(index, 1);
-      $scope.data_women.splice(index, 1);
-      $scope.labels_races.splice(index, 1);
-      $scope.data_runners.splice(index, 1);
-      //$scope.data_runners_team..splice(index, 1);
-      //$scope.data_runners_without_team.splice(index, 1);
+    $scope.data_men.splice(index, 1);
+    $scope.data_women.splice(index, 1);
+    $scope.labels_races.splice(index, 1);
+    $scope.data_runners.splice(index, 1);
+    //$scope.data_runners_team..splice(index, 1);
+    //$scope.data_runners_without_team.splice(index, 1);
 
-      if ($scope.selected_races.length === 0) {
-        $scope.show_info = 'none';
-      }
-      reAdjustHistogram();
-    };
-
-
-
-    $scope.isRaceSelected = function (race) {
-      return ($scope.selected_races.indexOf(race) > -1);
-      };
-
-    $scope.selectRace = function (race) {
-
-      var index = $scope.indexRaceSelected(race);
-      if(index > -1) {
-        $scope.unselectRace(index);
-      }
-      else if (race !== null) {
-        $scope.selected_races.push(race);
-        $scope.show_info = 'race';
-        setInfoRaceCharts(race);
-        setHistogram(race);
-        setSexChart(race);
-        setTeamsChart(race);
-        setMenWomenCharts(race);
-      }
-      else {
-        initialize_stats();
-        $scope.show_info = 'none';
-      }
-
-      var sample = {
-        'data_radar': $scope.data_radar,
-        'labls_radar': $scope.labels_radar,
-        'data_hist': $scope.data_hist,
-        'labels_hist': $scope.labels_hist,
-        'data_runners' : $scope.data_runners,
-        'labels_race' : $scope.labels_races,
-        'data_men' : $scope.data_men,
-        'data_women' : $scope.data_women
-
-      };
-      console.log(JSON.stringify(sample));
-    };
+    if ($scope.selected_races.length === 0) {
+      $scope.show_info = 'none';
+    }
+    reAdjustHistogram();
+  };
 
 
-    $scope.showInfoCircuit = function() {
-      $scope.show_info = 'circuit';
-      $scope.selected_race = 'null';
-      //TODO: Show info circuit
-    };
 
-    $scope.setInfoRace = function(information) {
-      $scope.show_info_race = information;
+  $scope.isRaceSelected = function (race) {
+    return ($scope.selected_races.indexOf(race) > -1);
+  };
+
+  $scope.selectRace = function (race) {
+
+    var index = $scope.indexRaceSelected(race);
+    if(index > -1) {
+      $scope.unselectRace(index);
+    }
+    else if (race !== null) {
+      $scope.selected_races.push(race);
+      $scope.show_info = 'race';
+      setInfoRaceCharts(race);
+      setHistogram(race);
+      setSexChart(race);
+      setTeamsChart(race);
+      setMenWomenCharts(race);
+    }
+    else {
+      initialize_stats();
+      $scope.show_info = 'none';
+    }
+
+    var sample = {
+      'data_radar': $scope.data_radar,
+      'labls_radar': $scope.labels_radar,
+      'data_hist': $scope.data_hist,
+      'labels_hist': $scope.labels_hist,
+      'data_runners' : $scope.data_runners,
+      'labels_race' : $scope.labels_races,
+      'data_men' : $scope.data_men,
+      'data_women' : $scope.data_women
 
     };
+    console.log(JSON.stringify(sample));
+  };
 
-    $scope.isInfoRace = function(information) {
-      return $scope.show_info_race === information;
-    };
+
+  $scope.showInfoCircuit = function() {
+    $scope.show_info = 'circuit';
+    $scope.selected_race = 'null';
+    //TODO: Show info circuit
+  };
+
+  $scope.setInfoRace = function(information) {
+    $scope.show_info_race = information;
+
+  };
+
+  $scope.isInfoRace = function(information) {
+    return $scope.show_info_race === information;
+  };
 
   $scope.show_hist_bars = true;
   $scope.toggleHist = function() {
@@ -264,7 +264,7 @@ app.controller('RacesCtrl', function ($scope, runstats) {
   $scope.showHistBars = function() {
     return $scope.show_hist_bars;
   }
-    // Chart utils
+  // Chart utils
   function setInfoRaceCharts(race) {
 
     // pie chart data_pie labels_pie
@@ -293,7 +293,7 @@ app.controller('RacesCtrl', function ($scope, runstats) {
       },
       {
         'name': "Average Pace",
-         'func': get_avg_pace,
+        'func': get_avg_pace,
         'norm' : function(v) { return 1.0 - (v/300); }
       },
       {
@@ -398,7 +398,7 @@ app.controller('RacesCtrl', function ($scope, runstats) {
         race.histogram = data.histogram;
 
         reAdjustHistogram();
-       });
+      });
     }
     else {
       reAdjustHistogram();
@@ -420,8 +420,8 @@ app.controller('RacesCtrl', function ($scope, runstats) {
       values.push(csex.runners);
     }
 
-  $scope.labels_sex = labels;
-  $scope.data_sex = values;
+    $scope.labels_sex = labels;
+    $scope.data_sex = values;
 
   }
 
@@ -490,10 +490,10 @@ app.filter('race_filter', function($filter) {
         return kms + " kms";
         break;
       case 'time':
-          var date = new Date(1970,0,1).setSeconds(input);
-          return $filter('date')(date,"HH'h' mm'm' ss's'");
+        var date = new Date(1970,0,1).setSeconds(input);
+        return $filter('date')(date,"HH'h' mm'm' ss's'");
       default:
-            return input;
+        return input;
     }
   };
 });
