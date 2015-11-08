@@ -28,6 +28,60 @@ class Race:
     def in_a(cls, tag, f):
         return f(tag.a.string)
 
+    def post_process_data(self, results, race_data):
+        """
+
+        :param results:
+        :param race_data:
+        :return:
+        """
+        #"teams": 0,
+        # "real_best": 0,
+        #           "oficial_best": 0,
+        #           "real_avg": 0,
+        #           "oficial_avg": 0,
+        #            "runners": 0
+
+        real_sorted = sorted(results, key = lambda x: results[x]["treal"])
+
+        for p, runner in enumerate(real_sorted):
+            results[runner]["preal"] = p + 1
+
+        teams = {}
+
+        real_best = 0
+        real_avg = 0.0
+        official_avg = 0.0
+
+        total =  len(results)
+        for r, runner in results.items():
+            # Clubs
+            if "club" in runner:
+                club = runner["club"]
+                if club not in teams:
+                    teams[club] = 0
+                teams[club] += 1
+
+            if runner["preal"] == 1:
+                real_best = runner["treal"]
+
+            if runner["pgeneral"] == 1:
+                official_best = runner["tofficial"]
+
+            real_avg += runner["treal"]
+            official_avg += runner["tofficial"]
+
+        race_data["teams"] = teams
+        race_data["real_avg"] = real_avg/total
+        race_data["official_avg"] = official_avg/total
+        race_data["official_best"] = official_best
+        race_data["real_best"] = official_best
+
+        if race_data["runners"] == 0:
+            race_data["runners"] = len(results.items())
+
+
+
 class Cronochip(Race):
     def __init__(self):
         self.url = "http://www.cronochip.com/inscripciones/clasifications/general/page:%d/competition:%s"
@@ -140,56 +194,6 @@ class Cronochip(Race):
 
         return race_info
 
-    def post_process_data(self, results, race_data):
-        """
-
-        :param results:
-        :param race_data:
-        :return:
-        """
-        #"teams": 0,
-        # "real_best": 0,
-        #           "oficial_best": 0,
-        #           "real_avg": 0,
-        #           "oficial_avg": 0,
-        #            "runners": 0
-
-        real_sorted = sorted(results, key = lambda x: results[x]["treal"])
-
-        for p, runner in enumerate(real_sorted):
-            results[runner]["preal"] = p + 1
-
-        teams = {}
-
-        real_best = 0
-        real_avg = 0.0
-        official_avg = 0.0
-
-        total =  len(results)
-        for r, runner in results.items():
-            # Clubs
-            if "club" in runner:
-                club = runner["club"]
-                if club not in teams:
-                    teams[club] = 0
-                teams[club] += 1
-
-            if runner["preal"] == 1:
-                real_best = runner["treal"]
-
-            if runner["pgeneral"] == 1:
-                official_best = runner["tofficial"]
-
-            real_avg += runner["treal"]
-            official_avg += runner["tofficial"]
-
-        race_data["teams"] = teams
-        race_data["real_avg"] = real_avg/total
-        race_data["official_avg"] = official_avg/total
-        race_data["official_best"] = official_best
-        race_data["real_best"] = official_best
-
-
 
 
     def parse_page(self, url_page, results, race_info = None):
@@ -249,7 +253,88 @@ class Cronochip(Race):
             dorsal = int(d["dorsal"])
 
             results[dorsal] = d
+
         return fin
+
+
+import requests, json
+
+class Sportmaniacs(Race):
+    def __init__(self):
+        self.url = "https://sportmaniacs.com/api/races/%s?lang=es&depth=1&info=true"
+        self.url_runners = "https://sportmaniacs.com/api/rankings?event=%s&lang=es&depth=1&limit=null&null=true&page=%d"
+        #self.url_summary ="http://www.cronochip.com/inscripciones/clasifications/resumen/competition:%s"
+        # TODO: move this to the abstract class
+
+    def parse_race(self, tag):
+
+
+        race_data = {
+                "distance": 0,
+                "name": "tag",
+                "id": tag,
+                "teams": 0,
+                "real_best": 0,
+                "official_best": 0,
+                "real_avg": 0,
+                "official_avg": 0,
+                "runners": 0,
+                "sex":
+                    [{"runners": 0},]
+            }
+
+        print "Parsing...", tag
+
+        url_page = self.url % (tag)
+
+        print "Getting request", url_page
+        response = requests.get(url_page)
+        data = json.loads(response.text)
+        info_data = data["data"]["Events"][0]
+
+        cronochip_id = info_data["id"]
+
+        try:
+            distance = float(re.search("(\d+.\d+)", info_data["distance"]).groups()[0])
+        except:
+            distance = float(re.search("(\d+)", info_data["distance"]).groups()[0])
+        race_data["distance"] = distance * 1000
+        race_data["name"] = data["data"]["name"]
+
+
+        # Now computing the results
+        page = 1
+        results = {}
+
+        while True:
+            url_runners = self.url_runners % (cronochip_id, page)
+            response = requests.get(url_runners)
+            data = json.loads(response.text)
+
+            print "# Page", page
+            if "data" not in data:
+                break
+            runners_data = data["data"]
+
+            print "First runner", runners_data[0]["pos"]
+            for runner in runners_data:
+                dorsal = int(runner["dorsal"])
+                info_runner = {
+                    "pgeneral" : int(runner["pos"]),
+                    "pcat" : int(runner["catPos"]),
+                    "cat" : runner["category"],
+                    "dorsal" : dorsal,
+                    "tofficial" : self.to_seconds(runner["officialTime"]),
+                    "treal": self.to_seconds(runner["realTime"]),
+                    "club": runner["club"]
+                }
+                results[dorsal] = info_runner
+
+            page += 1
+
+        self.post_process_data(results, race_data)
+        return race_data, results
+
 
 if __name__ == '''__main__''':
 
@@ -258,8 +343,8 @@ if __name__ == '''__main__''':
 
     id = sys.argv[1]
 
-    race = Cronochip()
-
+    # race = Cronochip()
+    race = Sportmaniacs()
     race_info, runners_data = race.parse_race(id)
 
     print race_info

@@ -1,5 +1,5 @@
 __author__ = 'jpastor'
-from races import Cronochip
+from races import Cronochip, Sportmaniacs
 import json
 import sys
 import os
@@ -8,13 +8,12 @@ import urllib2
 from BeautifulSoup import BeautifulSoup
 import re
 
-def parse_circuit(indexes, id, name, dst_dir, parser=Cronochip,
+def parse_circuit(indexes, id, name, dst_dir, platforms = [],
                   update=False, delete=False, dates = []
                   ):
     """
     :return: dumps the circuit data in the dst_dir
     """
-    race = Cronochip()
 
     # Load or create the races files
     race_list_file = "%s/races.json" % (dst_dir)
@@ -33,27 +32,41 @@ def parse_circuit(indexes, id, name, dst_dir, parser=Cronochip,
 
         f.close()
 
+    circuit_races = []
     if id in circuit_list:
         print >> sys.stderr, "The race %s already exists" % (id)
         if not update:
-            return -1
-        # Remove circuit
+            circuit_file = "%s/circuits/%s.json" % (dst_dir, id)
+            # 1.Save race_info
+            f = open(circuit_file)
+            circuit_info = json.load(f)
+            circuit_races = circuit_info["races"]
+            f.close()
+            # Remove circuit
 
-    for tag in indexes:
+    for i, tag in enumerate(indexes):
+
+        if platforms and platforms[i] == "sportmaniacs":
+            race = Sportmaniacs()
+
+        else:
+            race = Cronochip()
         if tag in race_list:
             print >> sys.stderr, "The race %s already exists" % (tag)
-            if update:
+            if not update:
                 continue
+
         try:
             race_summary, race_info = race.parse_race(tag)
         except:
+            print "Unexpected error:", sys.exc_info()[0]
             print "Problem parsing the race"
             continue
 
         race_file = "%s/runners/%s.json" % (dst_dir, tag)
 
         if dates:
-            race_summary["date"] = dates
+            race_summary["date"] = dates[i]
 
         # 1.Save race_info
         f = open(race_file, "w")
@@ -68,12 +81,13 @@ def parse_circuit(indexes, id, name, dst_dir, parser=Cronochip,
         json.dump(race_summary, f)
 
         race_list.add(tag)
+        circuit_races.append(tag)
         f.close()
 
     # Save the info circuit
     circuit = {
         "name": name,
-        "races": indexes
+        "races": circuit_races
     }
 
     circuit_file = "%s/circuits/%s.json" % (dst_dir, id)
@@ -104,6 +118,7 @@ def get_indexes_from_cronochip(name):
     print "Loading from", url_page
     ids = []
     dates = []
+    platforms = []
     try:
         f = urllib2.urlopen(url_page)
         content = f.read()
@@ -129,14 +144,18 @@ def get_indexes_from_cronochip(name):
         #TODO Decide is sportmaniacs or cronochip
         try:
             id = re.search("(\d+)", race_url).groups()[0]
+            platform = "cronochip"
         except:
-            continue
+            id = re.search("http://sportmaniacs.com/clasificacion/(\S+)", race_url).groups()[0]
+            platform = "sportmaniacs"
 
-        print name, date, id
+
+
+        print name, date, id, platform
         ids.append(id)
         dates.append(date)
-
-    return ids, dates
+        platforms.append(platform)
+    return ids, platforms, dates
 
 from common import mkdir_p
 from optparse import OptionParser
@@ -175,9 +194,11 @@ if __name__ == '__main__':
 
     dates = []
     if not findexes:
-        tags, dates = get_indexes_from_cronochip(name)
+        tags, platforms, dates = get_indexes_from_cronochip(name)
 
     else:
         tags = [line.replace("\n", "") for line in open(findexes)]
         # Load circuit json
-    parse_circuit(tags, id, name, dst_dir, update=options.update, delete=options.delete, dates = dates)
+    parse_circuit(tags, id, name, dst_dir,
+                  update=options.update, delete=options.delete,
+                  dates = dates, platforms=platforms)

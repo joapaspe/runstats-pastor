@@ -24,14 +24,16 @@
           <li ng-repeat="(id, race) in races"
               ng-style="selectedClass(race)">
             <a ng-click="selectRace(race)" ng-style="selectedStyle(race)">
-              {{race.name}}</a></li>
+              {{race.name}}
+              <span class="label label-default  pull-right">{{race.date}}</span>
+            </a>
+          </li>
         </ul>
       </div>
 
       <div class="col-md-9">
         <div ng-show="show_info == 'circuit'">
           <h2>{{circuit_info.name}}</h2>
-
         </div>
         <div ng-if="show_info == 'race' && selected_races.length > 0">
 
@@ -40,6 +42,7 @@
                 class="btn btn-sm" ng-style="selectedStyle(race)">
             {{race.name}}
           </span>
+
           <span class="btn btn-sm" ng-click="initialize_stats()">Remove Selection</span>
           <div ng-if="isInfoRace('information')">
             <div ng-include="'views/races_charts.html'">
@@ -48,8 +51,6 @@
         </div>
       </div>
     </div>
-
-
   </div>
   <div ng-if="status.data_loaded == false">
     <div class="panel panel-default">
