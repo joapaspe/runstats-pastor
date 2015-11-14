@@ -86,7 +86,7 @@ def parse_circuit(indexes, id, name, dst_dir, platforms = [],
 
     # Save the info circuit
     circuit = {
-        "name": name,
+        "name": name.replace("_"," "),
         "races": circuit_races
     }
 
@@ -142,11 +142,19 @@ def get_indexes_from_cronochip(name):
         race_url = tds[2].a["href"]
 
         #TODO Decide is sportmaniacs or cronochip
-        try:
-            id = re.search("(\d+)", race_url).groups()[0]
+
+        rid = re.search("(\d+)", race_url)
+
+        if rid is not None:
+            id = rid.groups()[0]
             platform = "cronochip"
-        except:
-            id = re.search("http://sportmaniacs.com/clasificacion/(\S+)", race_url).groups()[0]
+
+        else:
+            rid = re.search("http://sportmaniacs.com/clasificacion/(\S+)", race_url)
+            if rid is not None:
+                id = rid.groups()[0]
+            else:
+                id = re.search("http://sportmaniacs.com/#/races/(\S+)", race_url).groups()[0]
             platform = "sportmaniacs"
 
 
